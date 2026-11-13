@@ -7,6 +7,7 @@ import asyncio
 import json
 import time
 from typing import Dict, Any, List, Optional
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -21,10 +22,63 @@ from mri_scanner import mri_scanner
 from pdf_generator import pdf_generator
 from api_proxy import api_proxy_engine
 
+# Active WebSocket subscribers
+connected_websockets: List[WebSocket] = []
+
+async def telemetry_broadcast_loop():
+    """
+    Continuous 50Hz AsyncIO Background Broadcast Loop (Every 20ms = 50 Frames/sec).
+    """
+    while True:
+        try:
+            # Generate 50Hz frame
+            frame = fleet_simulator.generate_50hz_frame("ESP32_MASTER_01")
+            
+            # Record in Cyber-Physical Time-Machine 60-second ring buffer
+            time_machine_engine.record_frame(frame)
+
+            # Broadcast to all connected frontend clients
+            if connected_websockets:
+                payload_str = json.dumps(frame)
+                disconnected = []
+                for ws in list(connected_websockets):
+                    try:
+                        await ws.send_text(payload_str)
+                    except Exception:
+                        disconnected.append(ws)
+                for dead_ws in disconnected:
+                    if dead_ws in connected_websockets:
+                        try:
+                            connected_websockets.remove(dead_ws)
+                        except ValueError:
+                            pass
+
+        except asyncio.CancelledError:
+            break
+        except Exception as ex:
+            print(f"[AetherNexus Bus Error] {ex}")
+
+        await asyncio.sleep(0.02) # 20 milliseconds = exactly 50Hz!
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Start high-frequency telemetry broadcaster in background
+    broadcast_task = asyncio.create_task(telemetry_broadcast_loop())
+    print("[AetherNexus OS] High-Speed 50Hz Telemetry Bus initialized successfully.")
+    try:
+        yield
+    finally:
+        broadcast_task.cancel()
+        try:
+            await broadcast_task
+        except asyncio.CancelledError:
+            pass
+
 app = FastAPI(
     title="AetherNexus OS — Cyber-Physical Telemetry & Self-Healing Core",
     version="1.0.4",
-    description="High-Speed 50Hz Telemetry Bus, LangGraph Swarm & Diagnostic MRI Engine"
+    description="High-Speed 50Hz Telemetry Bus, LangGraph Swarm & Diagnostic MRI Engine",
+    lifespan=lifespan
 )
 
 # Enable CORS for Next.js frontend
@@ -35,9 +89,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Active WebSocket subscribers
-connected_websockets: List[WebSocket] = []
 
 # ==============================================================================
 # WEBSOCKET 50Hz HIGH-SPEED TELEMETRY HUB (20ms Loop)
@@ -73,47 +124,16 @@ async def telemetry_websocket_endpoint(websocket: WebSocket):
                 elif action == "RESET_LOCKDOWN":
                     ghost_radar_engine.reset_lockdown()
                     fleet_simulator.toggle_room_intrusion(False)
-            except Exception as e:
+            except Exception:
                 pass
-    except WebSocketDisconnect:
+    except (WebSocketDisconnect, Exception):
+        pass
+    finally:
         if websocket in connected_websockets:
-            connected_websockets.remove(websocket)
-
-async def telemetry_broadcast_loop():
-    """
-    Continuous 50Hz AsyncIO Background Broadcast Loop (Every 20ms = 50 Frames/sec).
-    """
-    while True:
-        try:
-            # Generate 50Hz frame
-            frame = fleet_simulator.generate_50hz_frame("ESP32_MASTER_01")
-            
-            # Record in Cyber-Physical Time-Machine 60-second ring buffer
-            time_machine_engine.record_frame(frame)
-
-            # Broadcast to all connected frontend clients
-            if connected_websockets:
-                payload_str = json.dumps(frame)
-                disconnected = []
-                for ws in connected_websockets:
-                    try:
-                        await ws.send_text(payload_str)
-                    except Exception:
-                        disconnected.append(ws)
-                for dead_ws in disconnected:
-                    if dead_ws in connected_websockets:
-                        connected_websockets.remove(dead_ws)
-
-        except Exception as ex:
-            print(f"[AetherNexus Bus Error] {ex}")
-
-        await asyncio.sleep(0.02) # 20 milliseconds = exactly 50Hz!
-
-@app.on_event("startup")
-async def startup_event():
-    # Start high-frequency telemetry broadcaster in background
-    asyncio.create_task(telemetry_broadcast_loop())
-    print("[AetherNexus OS] High-Speed 50Hz Telemetry Bus initialized successfully.")
+            try:
+                connected_websockets.remove(websocket)
+            except ValueError:
+                pass
 
 from auth import auth_manager, OAuth2TokenResponse, get_current_user_claims, OAuth2PasswordBearer
 
