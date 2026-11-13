@@ -3,6 +3,8 @@ AetherNexus OS — Master Production FastAPI Backend & 50Hz WebSocket Engine
 The Cyber-Physical Diagnostic MRI, Autonomous Self-Healing Core & Telemetry Bus
 """
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asyncio
 import json
 import time
@@ -62,6 +64,18 @@ async def telemetry_broadcast_loop():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Set resilient exception handler to avoid unhandled socket disconnects from halting the event loop
+    loop = asyncio.get_running_loop()
+    def custom_exception_handler(loop, context):
+        exception = context.get("exception")
+        message = context.get("message")
+        # Silently absorb websockets keepalive timeouts and closed connection anomalies
+        if exception and "ConnectionClosed" in str(type(exception)):
+            return
+        print(f"[AetherNexus Engine Non-Fatal Error Handled]: {message or exception}")
+
+    loop.set_exception_handler(custom_exception_handler)
+
     # Startup: Start high-frequency telemetry broadcaster in background
     broadcast_task = asyncio.create_task(telemetry_broadcast_loop())
     print("[AetherNexus OS] High-Speed 50Hz Telemetry Bus initialized successfully.")
@@ -532,5 +546,6 @@ def query_stark_copilot(req: CopilotQueryRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
+    backend_dir = os.path.dirname(os.path.abspath(__file__))
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False, app_dir=backend_dir)
 
