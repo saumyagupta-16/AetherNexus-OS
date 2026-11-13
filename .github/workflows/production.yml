@@ -86,3 +86,4 @@ jobs:
           file: ./frontend/Dockerfile
           push: false
           tags: aethernexus/frontend:latest
+

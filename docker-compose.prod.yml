@@ -93,3 +93,4 @@ services:
 volumes:
   traefik_certificates:
   timescaledb_prod_data:
+

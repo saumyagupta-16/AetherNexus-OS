@@ -42,11 +42,14 @@ import { SecOpsWorkspace } from '@/components/workspaces/SecOpsWorkspace';
 import { ClientAuditorWorkspace } from '@/components/workspaces/ClientAuditorWorkspace';
 
 import { appleAudio } from '@/lib/audio';
+import { GlobalHeader } from '@/components/navigation/GlobalHeader';
+import { useAuth } from '@/context/AuthContext';
 
 const API_BASE = 'http://localhost:8000';
 const WS_URL = 'ws://localhost:8000/ws/telemetry';
 
 export default function Home() {
+  const { user, switchRole } = useAuth();
   const [currentRole, setCurrentRole] = useState('IOT_ENGINEER');
   const [currentIndustry, setCurrentIndustry] = useState('IIOT');
 
@@ -140,6 +143,7 @@ export default function Home() {
   const handleRoleChange = (roleId: string) => {
     appleAudio.playClick();
     setCurrentRole(roleId);
+    switchRole(roleId);
   };
 
   // Chaos Actions
@@ -279,56 +283,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-28 text-slate-900">
       {/* Top Apple Navigation Bar */}
-      <header className="sticky top-0 z-40 apple-glass border-b border-slate-200/80 px-6 py-3.5">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-sm shadow-xs">
-              Æ
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-sm font-bold tracking-tight text-slate-900">AetherNexus OS</h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                  v1.0.4 Golden Master
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400">Qualimatrix Technologies & Enterprise Ecosystem</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Live 50Hz WebSocket Status */}
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white border border-slate-200 shadow-xs">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  wsConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'
-                }`}
-              />
-              <span className="text-slate-700">
-                {wsConnected ? '50Hz Live Telemetry Bus' : 'Reconnecting Telemetry Bus...'}
-              </span>
-            </div>
-
-            {/* Industry Blueprint Selector */}
-            <IndustrySelector
-              currentIndustry={currentIndustry}
-              onSelectIndustry={(id) => {
-                appleAudio.playClick();
-                setCurrentIndustry(id);
-              }}
-            />
-
-            {/* Apple Glassdoor Login Button */}
-            <Link
-              href="/login"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs cursor-pointer"
-            >
-              <User className="w-3.5 h-3.5" />
-              <span>Admin</span>
-            </Link>
-          </div>
-        </div>
-      </header>
+      <GlobalHeader
+        onTriggerMri={handleRunMRIScan}
+        onToggleTimeMachine={() => setIsRewound(!isRewound)}
+        onOpenGhostRadar={() => handleSimulateIntrusion(true)}
+      />
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-6 pt-6 space-y-6">
