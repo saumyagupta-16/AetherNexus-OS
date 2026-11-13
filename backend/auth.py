@@ -123,3 +123,4 @@ def get_current_user_claims(token: str = Depends(oauth2_scheme)) -> Dict[str, An
             headers={"WWW-Authenticate": "Bearer"},
         )
     return verification.claims
+
