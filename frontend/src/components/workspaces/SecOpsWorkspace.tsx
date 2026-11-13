@@ -108,3 +108,4 @@ export const SecOpsWorkspace: React.FC = () => {
     </div>
   );
 };
+

@@ -119,6 +119,44 @@ async def startup_event():
 # REST API ENDPOINTS
 # ==============================================================================
 
+# --- Authentication & Zero-Trust Identity ---
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+@app.post("/api/auth/login")
+def login(req: LoginRequest):
+    """
+    Apple Glassdoor Zero-Trust Authorization Endpoint.
+    Validates enterprise credentials (admin / 987456) and issues session passport.
+    """
+    if req.username.strip() == "admin" and req.password.strip() == "987456":
+        return {
+            "status": "AUTHENTICATED",
+            "access_token": "aethernexus_jwt_session_admin_2026",
+            "token_type": "Bearer",
+            "expires_in": 86400,
+            "user": {
+                "username": "admin",
+                "full_name": "Saumya Gupta (Principal Systems Architect)",
+                "role": "CEO_ADMIN",
+                "org_slug": "qualimatrix-enterprise",
+                "organization_name": "Qualimatrix Technologies Enterprise",
+                "avatar_initials": "SG"
+            }
+        }
+    raise HTTPException(status_code=401, detail="Invalid enterprise credentials. Please verify username and password.")
+
+@app.get("/api/auth/me")
+def get_current_user():
+    return {
+        "username": "admin",
+        "full_name": "Saumya Gupta (Principal Systems Architect)",
+        "role": "CEO_ADMIN",
+        "org_slug": "qualimatrix-enterprise"
+    }
+
 @app.get("/api/health")
 def health_check():
     return {

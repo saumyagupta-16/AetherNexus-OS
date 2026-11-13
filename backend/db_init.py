@@ -107,3 +107,4 @@ def generate_sql_migration_script(output_file: str = "schema.sql"):
 
 if __name__ == "__main__":
     generate_sql_migration_script()
+

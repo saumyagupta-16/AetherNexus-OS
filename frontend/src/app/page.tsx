@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { User, LogOut } from 'lucide-react';
 import { 
   RoleSwitcher, ROLES 
 } from '@/components/RoleSwitcher';
@@ -312,6 +314,15 @@ export default function Home() {
                 setCurrentIndustry(id);
               }}
             />
+
+            {/* Apple Glassdoor Login Button */}
+            <Link
+              href="/login"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs cursor-pointer"
+            >
+              <User className="w-3.5 h-3.5" />
+              <span>Admin</span>
+            </Link>
           </div>
         </div>
       </header>

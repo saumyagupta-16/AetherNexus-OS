@@ -51,3 +51,4 @@ def start_serial_bridge(baud_rate: int = 115200, mock_fallback: bool = True):
 
 if __name__ == "__main__":
     start_serial_bridge()
+

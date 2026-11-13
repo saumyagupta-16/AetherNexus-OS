@@ -87,3 +87,4 @@ export const ClientAuditorWorkspace: React.FC<ClientAuditorWorkspaceProps> = ({
     </div>
   );
 };
+
