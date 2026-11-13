@@ -1,0 +1,18 @@
+{
+  "name": "aethernexus-os",
+  "version": "1.0.4",
+  "private": true,
+  "description": "Multi-Tenant Autonomous Enterprise Operating System, Cyber-Physical Diagnostic MRI & Self-Healing Cloud Pod",
+  "scripts": {
+    "dev": "concurrently -n \"BACKEND,FRONTEND\" -c \"cyan.bold,magenta.bold\" --kill-others-on-fail \"python backend/main.py\" \"pnpm --dir frontend dev\"",
+    "dev:backend": "python backend/main.py",
+    "dev:frontend": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build",
+    "start": "pnpm --dir frontend start",
+    "install:all": "pnpm install && pnpm --dir frontend install && pip install -r backend/requirements.txt"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
+
