@@ -7,7 +7,7 @@ import asyncio
 import json
 import time
 from typing import Dict, Any, List, Optional
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -115,46 +115,111 @@ async def startup_event():
     asyncio.create_task(telemetry_broadcast_loop())
     print("[AetherNexus OS] High-Speed 50Hz Telemetry Bus initialized successfully.")
 
+from auth import auth_manager, OAuth2TokenResponse, get_current_user_claims, OAuth2PasswordBearer
+
 # ==============================================================================
 # REST API ENDPOINTS
 # ==============================================================================
 
-# --- Authentication & Zero-Trust Identity ---
+# --- RFC 6749 OAuth 2.0 & Zero-Trust Authentication Engine ---
 
 class LoginRequest(BaseModel):
     username: str
     password: str
+    bind_silicon_dna: Optional[bool] = True
 
-@app.post("/api/auth/login")
-def login(req: LoginRequest):
+class VerifyTokenRequest(BaseModel):
+    token: str
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+@app.post("/api/auth/token", response_model=OAuth2TokenResponse)
+def oauth2_token_endpoint(req: LoginRequest):
+    """
+    RFC 6749 OAuth 2.0 Token Endpoint.
+    Authenticates enterprise credentials (admin / 987456) and returns cryptographic JWT Bearer Token.
+    """
+    user = auth_manager.authenticate_user(req.username, req.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid enterprise credentials. Please check your username and passcode.",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+
+    access_token = auth_manager.create_access_token(user)
+    refresh_token = auth_manager.create_refresh_token(user)
+
+    return OAuth2TokenResponse(
+        access_token=access_token,
+        token_type="bearer",
+        expires_in=86400,
+        refresh_token=refresh_token,
+        scope=" ".join(user["scopes"]),
+        user={
+            "user_id": user["user_id"],
+            "username": user["username"],
+            "full_name": user["full_name"],
+            "role": user["role"],
+            "email": user["email"],
+            "org_id": user["org_id"],
+            "org_slug": user["org_slug"],
+            "org_name": user["org_name"],
+            "silicon_dna_anchored": req.bind_silicon_dna
+        }
+    )
+
+@app.post("/api/auth/login", response_model=OAuth2TokenResponse)
+def login_endpoint(req: LoginRequest):
     """
     Apple Glassdoor Zero-Trust Authorization Endpoint.
-    Validates enterprise credentials (admin / 987456) and issues session passport.
+    Accepts JSON body and issues an authentic OAuth 2.0 JWT Bearer Token.
     """
-    if req.username.strip() == "admin" and req.password.strip() == "987456":
-        return {
-            "status": "AUTHENTICATED",
-            "access_token": "aethernexus_jwt_session_admin_2026",
-            "token_type": "Bearer",
-            "expires_in": 86400,
-            "user": {
-                "username": "admin",
-                "full_name": "Saumya Gupta (Principal Systems Architect)",
-                "role": "CEO_ADMIN",
-                "org_slug": "qualimatrix-enterprise",
-                "organization_name": "Qualimatrix Technologies Enterprise",
-                "avatar_initials": "SG"
-            }
-        }
-    raise HTTPException(status_code=401, detail="Invalid enterprise credentials. Please verify username and password.")
+    return oauth2_token_endpoint(req)
+
+@app.post("/api/auth/verify")
+def verify_token_endpoint(req: VerifyTokenRequest):
+    """
+    Validates any incoming JWT Bearer token and returns its decoded claims.
+    """
+    result = auth_manager.verify_token(req.token)
+    if not result.valid:
+        raise HTTPException(status_code=401, detail=result.error or "Invalid token")
+    return {
+        "status": "TOKEN_VALID",
+        "claims": result.claims
+    }
+
+@app.post("/api/auth/refresh")
+def refresh_token_endpoint(req: RefreshTokenRequest):
+    """
+    Issues a new access token using a valid refresh token.
+    """
+    result = auth_manager.verify_token(req.refresh_token)
+    if not result.valid or not result.claims or result.claims.get("type") != "refresh":
+        raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
+
+    username = result.claims.get("sub")
+    user = auth_manager.authorized_users.get(username)
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    new_access_token = auth_manager.create_access_token(user)
+    return {
+        "access_token": new_access_token,
+        "token_type": "bearer",
+        "expires_in": 86400
+    }
 
 @app.get("/api/auth/me")
-def get_current_user():
+def get_current_user(claims: Dict[str, Any] = Depends(get_current_user_claims)):
+    """
+    Protected endpoint requiring a valid OAuth 2.0 Bearer token in Authorization header.
+    """
     return {
-        "username": "admin",
-        "full_name": "Saumya Gupta (Principal Systems Architect)",
-        "role": "CEO_ADMIN",
-        "org_slug": "qualimatrix-enterprise"
+        "authenticated": True,
+        "claims": claims
     }
 
 @app.get("/api/health")

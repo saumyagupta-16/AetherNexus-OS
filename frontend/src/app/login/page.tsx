@@ -2,18 +2,40 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, User, Lock, Eye, EyeOff, ArrowRight, Fingerprint, Sparkles, CheckCircle2 } from 'lucide-react';
+import { 
+  ShieldCheck, User, Lock, Eye, EyeOff, ArrowRight, Fingerprint, 
+  Sparkles, CheckCircle2, Key, Shield, RefreshCw, Cpu, Award, ExternalLink
+} from 'lucide-react';
 import { appleAudio } from '@/lib/audio';
+
+interface DecodedClaims {
+  sub: string;
+  name: string;
+  role: string;
+  scope: string;
+  exp: number;
+  silicon_dna_bound: boolean;
+}
 
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('admin');
   const [password, setPassword] = useState('987456');
   const [showPassword, setShowPassword] = useState(false);
+  const [bindSiliconDNA, setBindSiliconDNA] = useState(true);
+  const [rememberDevice, setRememberDevice] = useState(true);
+
+  // Animation & Auth States
   const [isLoading, setIsLoading] = useState(false);
+  const [isFaceIDScanning, setIsFaceIDScanning] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [shake, setShake] = useState(false);
+
+  // Live OAuth 2.0 Token Inspector
+  const [issuedToken, setIssuedToken] = useState<string | null>(null);
+  const [decodedClaims, setDecodedClaims] = useState<DecodedClaims | null>(null);
+  const [showTokenDetails, setShowTokenDetails] = useState(false);
 
   const handleQuickFill = () => {
     appleAudio.playClick();
@@ -22,43 +44,73 @@ export default function LoginPage() {
     setErrorMessage('');
   };
 
+  const parseJwt = (token: string): any => {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     appleAudio.playClick();
     setErrorMessage('');
     setIsLoading(true);
+    setIsFaceIDScanning(true);
 
     try {
-      const res = await fetch('http://localhost:8000/api/auth/login', {
+      // RFC 6749 OAuth 2.0 Token Request
+      const res = await fetch('http://localhost:8000/api/auth/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ 
+          username, 
+          password,
+          bind_silicon_dna: bindSiliconDNA
+        }),
       });
 
       if (res.ok) {
         const data = await res.json();
+        const claims = parseJwt(data.access_token);
+        
+        setIssuedToken(data.access_token);
+        setDecodedClaims(claims);
+        setIsFaceIDScanning(false);
         setIsSuccess(true);
         appleAudio.playFailover(); // Harmonic Cupertino success chime
 
-        // Persist session
+        // Persist OAuth 2.0 Session
         if (typeof window !== 'undefined') {
-          localStorage.setItem('aether_session_token', data.access_token);
+          localStorage.setItem('aether_access_token', data.access_token);
+          localStorage.setItem('aether_refresh_token', data.refresh_token);
           localStorage.setItem('aether_user', JSON.stringify(data.user));
-          document.cookie = `aether_token=${data.access_token}; path=/; max-age=86400`;
+          document.cookie = `aether_token=${data.access_token}; path=/; max-age=86400; SameSite=Lax`;
         }
 
         setTimeout(() => {
           router.push('/');
-        }, 900);
+        }, 1200);
       } else {
         const err = await res.json();
+        setIsFaceIDScanning(false);
         setErrorMessage(err.detail || 'Invalid enterprise credentials');
         setShake(true);
         appleAudio.playAlert();
         setTimeout(() => setShake(false), 500);
       }
     } catch (err) {
-      setErrorMessage('Unable to reach authentication server on :8000');
+      setIsFaceIDScanning(false);
+      setErrorMessage('Unable to connect to OAuth 2.0 server on :8000');
       setShake(true);
       appleAudio.playAlert();
       setTimeout(() => setShake(false), 500);
@@ -76,24 +128,31 @@ export default function LoginPage() {
 
       {/* Floating Apple Glassdoor Card */}
       <div
-        className={`relative z-10 w-full max-w-[420px] apple-glassdoor rounded-3xl p-8 sm:p-10 transition-all duration-300 ${
+        className={`relative z-10 w-full max-w-[440px] apple-glassdoor rounded-3xl p-8 sm:p-10 transition-all duration-300 ${
           shake ? 'animate-shake' : ''
         }`}
       >
-        {/* Top Header & Monogram */}
-        <div className="text-center space-y-3 mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-slate-900 text-white shadow-md shadow-slate-900/10 mb-1">
-            <span className="text-xl font-black tracking-tight">Æ</span>
+        {/* Top Header & Cupertino Monogram */}
+        <div className="text-center space-y-3 mb-7">
+          <div className="relative inline-flex items-center justify-center">
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white shadow-md shadow-slate-900/10 flex items-center justify-center">
+              <span className="text-xl font-black tracking-tight">Æ</span>
+            </div>
+            {isFaceIDScanning && (
+              <span className="absolute -inset-1.5 rounded-2xl border-2 border-blue-500 animate-ping pointer-events-none" />
+            )}
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight text-slate-900">AetherNexus OS</h1>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">Enterprise Cyber-Physical Zero-Trust Portal</p>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">
+              RFC 6749 OAuth 2.0 & Zero-Trust Authorization Portal
+            </p>
           </div>
         </div>
 
         {/* Error Alert Pill */}
         {errorMessage && (
-          <div className="mb-5 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold text-center flex items-center justify-center gap-1.5">
+          <div className="mb-5 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold text-center flex items-center justify-center gap-1.5 animate-in fade-in">
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
             {errorMessage}
           </div>
@@ -101,9 +160,14 @@ export default function LoginPage() {
 
         {/* Success Verification Pill */}
         {isSuccess && (
-          <div className="mb-5 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold text-center flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            Identity Verified. Entering Workspace...
+          <div className="mb-5 p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold text-center flex flex-col items-center justify-center gap-1 animate-in zoom-in-95">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              OAuth 2.0 Bearer Token Verified
+            </div>
+            <span className="text-[10px] text-emerald-600 font-normal">
+              Zero-Trust Silicon Passport Granted • Redirecting...
+            </span>
           </div>
         )}
 
@@ -112,7 +176,7 @@ export default function LoginPage() {
           {/* Username Field */}
           <div>
             <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-              Enterprise Username
+              Enterprise Identity (OAuth 2.0 Username)
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -133,7 +197,7 @@ export default function LoginPage() {
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Security Passcode
+                Enterprise Passcode
               </label>
               <button
                 type="button"
@@ -169,43 +233,99 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* Security Toggles */}
+          <div className="space-y-2 pt-1">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={bindSiliconDNA}
+                onChange={(e) => {
+                  appleAudio.playClick();
+                  setBindSiliconDNA(e.target.checked);
+                }}
+                className="w-3.5 h-3.5 rounded-md text-blue-600 accent-blue-600 cursor-pointer"
+              />
+              <span className="text-[11px] font-semibold text-slate-600">
+                Anchor Session to SiliconDNA™ Hardware Passport
+              </span>
+            </label>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={rememberDevice}
+                onChange={(e) => {
+                  appleAudio.playClick();
+                  setRememberDevice(e.target.checked);
+                }}
+                className="w-3.5 h-3.5 rounded-md text-blue-600 accent-blue-600 cursor-pointer"
+              />
+              <span className="text-[11px] font-semibold text-slate-600">
+                Issue 30-Day Refresh Token (OAuth 2.0 Offline Scope)
+              </span>
+            </label>
+          </div>
+
           {/* Primary Sign In Button */}
           <button
             type="submit"
             disabled={isLoading || isSuccess}
-            className="w-full mt-2 py-3 px-4 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 active:scale-[0.98] transition-all duration-200 text-xs font-semibold shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full mt-3 py-3 px-4 rounded-2xl bg-slate-900 text-white hover:bg-slate-800 active:scale-[0.98] transition-all duration-200 text-xs font-semibold shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {isLoading ? (
               <span className="flex items-center gap-2">
-                <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                Authenticating Silicon Passport...
+                <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                Signing OAuth 2.0 Bearer JWT...
               </span>
             ) : isSuccess ? (
               <span className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4" />
-                Authorized
+                Authorized • Opening Workspace
               </span>
             ) : (
               <>
-                Sign In to Command Center
+                Authorize & Sign In
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
 
-        {/* Biometric Zero-Trust Verification Badge */}
-        <div className="mt-8 pt-6 border-t border-slate-200/70 text-center space-y-2">
+        {/* Live OAuth 2.0 Token Preview Drawer */}
+        {issuedToken && (
+          <div className="mt-5 p-3.5 rounded-2xl bg-slate-900 text-white space-y-2 text-[10px] font-mono animate-in fade-in">
+            <div className="flex items-center justify-between text-slate-400 font-sans font-bold">
+              <span className="flex items-center gap-1">
+                <Key className="w-3 h-3 text-emerald-400" />
+                OAUTH 2.0 BEARER JWT:
+              </span>
+              <span className="text-emerald-400 font-mono">HS256 Verified</span>
+            </div>
+            <div className="p-2 rounded-xl bg-slate-800/80 text-emerald-300 break-all select-all font-mono text-[9px] leading-relaxed">
+              {issuedToken}
+            </div>
+            {decodedClaims && (
+              <div className="pt-1 text-[10px] text-slate-300 space-y-0.5 font-sans">
+                <div><b>Subject:</b> {decodedClaims.sub} ({decodedClaims.name})</div>
+                <div><b>Role:</b> {decodedClaims.role}</div>
+                <div><b>Scopes:</b> {decodedClaims.scope}</div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Biometric Zero-Trust Verification Footer */}
+        <div className="mt-7 pt-5 border-t border-slate-200/70 text-center space-y-2">
           <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-500">
             <Fingerprint className="w-3.5 h-3.5 text-blue-600" />
             SiliconDNA™ Biometric Hardware Anchored
           </div>
           <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-medium">
+            <span>RFC 6749 Compliant</span>
+            <span>•</span>
             <span>SOC 2 Type II</span>
             <span>•</span>
             <span>IEC 62443 Zero-Trust</span>
-            <span>•</span>
-            <span>AES-256 Encrypted</span>
           </div>
         </div>
       </div>

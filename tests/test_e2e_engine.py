@@ -112,5 +112,37 @@ class TestAetherNexusEngine(unittest.TestCase):
         self.assertTrue(sim_data["counterfactual_simulation"]["is_counterfactual"])
         print(f"[✓] Cyber-Physical Time-Machine Validated ({win['total_frames']} frames scrubbable)")
 
+    def test_09_oauth2_authorization_flow(self):
+        """Verifies RFC 6749 OAuth 2.0 password grant, JWT verification, and protected route access."""
+        # 1. Acquire token
+        res = requests.post(f"{BASE_URL}/api/auth/token", json={"username": "admin", "password": "987456"})
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data["token_type"], "bearer")
+        self.assertIn("access_token", data)
+        self.assertIn("refresh_token", data)
+        token = data["access_token"]
+        refresh_token = data["refresh_token"]
+
+        # 2. Access protected route with Bearer header
+        headers = {"Authorization": f"Bearer {token}"}
+        res_me = requests.get(f"{BASE_URL}/api/auth/me", headers=headers)
+        self.assertEqual(res_me.status_code, 200)
+        me_data = res_me.json()
+        self.assertTrue(me_data["authenticated"])
+        self.assertEqual(me_data["claims"]["sub"], "admin")
+        self.assertEqual(me_data["claims"]["role"], "CEO_ADMIN")
+
+        # 3. Test refresh token
+        res_ref = requests.post(f"{BASE_URL}/api/auth/refresh", json={"refresh_token": refresh_token})
+        self.assertEqual(res_ref.status_code, 200)
+        self.assertIn("access_token", res_ref.json())
+
+        # 4. Reject invalid passcode
+        res_inv = requests.post(f"{BASE_URL}/api/auth/token", json={"username": "admin", "password": "badpassword"})
+        self.assertEqual(res_inv.status_code, 401)
+        print(f"[✓] RFC 6749 OAuth 2.0 Flow Validated (Token: {token[:18]}... | Scope: {data['scope'][:25]}...)")
+
 if __name__ == "__main__":
     unittest.main()
+

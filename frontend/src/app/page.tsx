@@ -30,6 +30,9 @@ import {
 import { 
   SelfMorphingProxyModal 
 } from '@/components/SelfMorphingProxyModal';
+import { 
+  ExecutiveDemoTour 
+} from '@/components/ExecutiveDemoTour';
 
 // Dedicated Enterprise Role Workspaces
 import { CEOAdminWorkspace } from '@/components/workspaces/CEOAdminWorkspace';
