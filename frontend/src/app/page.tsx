@@ -54,7 +54,6 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-3.5 pt-4">
             <Link
               href="/services"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-slate-900 text-white font-bold text-sm shadow-md hover:bg-slate-800 hover:scale-[1.02] active:scale-95 transition-all group"
             >
               <span>Explore All Services & Portfolios</span>
@@ -63,7 +62,6 @@ export default function HomePage() {
 
             <Link
               href="/contact"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white border border-slate-200/90 text-slate-800 font-bold text-sm shadow-xs hover:bg-slate-50 hover:border-slate-300 active:scale-95 transition-all"
             >
               <span>Schedule Architecture Review</span>
@@ -71,7 +69,6 @@ export default function HomePage() {
 
             <Link
               href="/aethernexus-enterprise"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-blue-50 text-blue-700 border border-blue-200/80 font-bold text-sm hover:bg-blue-100 transition-all"
             >
               <Building className="w-4 h-4" />
@@ -94,7 +91,7 @@ export default function HomePage() {
 
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => { appleAudio.playClick(); setActiveTab('FAILOVER'); }}
+                    onClick={() => setActiveTab('FAILOVER')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                       activeTab === 'FAILOVER' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     }`}
@@ -102,7 +99,7 @@ export default function HomePage() {
                     Sub-15ms ML Failover
                   </button>
                   <button
-                    onClick={() => { appleAudio.playClick(); setActiveTab('MRI'); }}
+                    onClick={() => setActiveTab('MRI')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                       activeTab === 'MRI' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     }`}
@@ -110,7 +107,7 @@ export default function HomePage() {
                     10-Probe Diagnostic MRI
                   </button>
                   <button
-                    onClick={() => { appleAudio.playClick(); setActiveTab('RADAR'); }}
+                    onClick={() => setActiveTab('RADAR')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                       activeTab === 'RADAR' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     }`}
@@ -118,7 +115,7 @@ export default function HomePage() {
                     GhostRadar™ RF Sonar
                   </button>
                   <button
-                    onClick={() => { appleAudio.playClick(); setActiveTab('PUF'); }}
+                    onClick={() => setActiveTab('PUF')}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                       activeTab === 'PUF' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
                     }`}
@@ -342,7 +339,6 @@ export default function HomePage() {
                 <div className="mt-6 pt-4 border-t border-slate-100">
                   <Link
                     href={`/services/${cat.id}`}
-                    onClick={() => appleAudio.playClick()}
                     className="w-full flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs transition-colors shadow-xs"
                   >
                     <span>Explore Category</span>
@@ -431,7 +427,6 @@ export default function HomePage() {
             <Link
               key={ind.id}
               href={`/services/industry-solutions`}
-              onClick={() => appleAudio.playClick()}
               className="p-4 rounded-2xl apple-glass border border-slate-200/80 hover:border-blue-400 hover:shadow-xs transition-all group flex flex-col justify-between"
             >
               <div>
@@ -471,14 +466,12 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <Link
               href="/about"
-              onClick={() => appleAudio.playClick()}
               className="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all"
             >
               Compliance Details
             </Link>
             <Link
               href="/contact"
-              onClick={() => appleAudio.playClick()}
               className="px-5 py-3 rounded-2xl bg-white text-slate-900 hover:bg-slate-100 font-bold text-xs transition-all shadow-md"
             >
               Request Enterprise Workspace

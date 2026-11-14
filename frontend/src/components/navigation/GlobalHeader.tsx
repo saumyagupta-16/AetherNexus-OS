@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   ChevronDown, Menu, X, User, LogOut, ShieldCheck, Key, Settings, 
-  ArrowRight, Sparkles, Building, ExternalLink 
+  Sparkles 
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { ServicesMegaMenu } from './ServicesMegaMenu';
-import { appleAudio } from '@/lib/audio';
 
 export const GlobalHeader: React.FC = () => {
   const pathname = usePathname();
@@ -29,14 +28,13 @@ export const GlobalHeader: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 apple-glass border-b border-slate-200/80 px-4 sm:px-8 py-3 transition-all">
+    <header className="sticky top-0 z-40 w-full apple-glass border-b border-slate-200/80 px-4 sm:px-8 py-3 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         
         {/* Brand Logo & Title */}
         <div className="flex items-center gap-3 shrink-0">
           <Link 
             href="/" 
-            onClick={() => appleAudio.playClick()}
             className="flex items-center gap-3 group"
           >
             <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-base shadow-sm group-hover:scale-105 transition-transform">
@@ -69,10 +67,7 @@ export const GlobalHeader: React.FC = () => {
                   onMouseLeave={() => setServicesMenuOpen(false)}
                 >
                   <button
-                    onClick={() => {
-                      appleAudio.playClick();
-                      setServicesMenuOpen(!servicesMenuOpen);
-                    }}
+                    onClick={() => setServicesMenuOpen(!servicesMenuOpen)}
                     className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                       isActive || servicesMenuOpen 
                         ? 'text-blue-600 bg-blue-50/80' 
@@ -97,7 +92,6 @@ export const GlobalHeader: React.FC = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => appleAudio.playClick()}
                 className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                   isActive 
                     ? 'text-blue-600 bg-blue-50/80 font-bold' 
@@ -116,7 +110,6 @@ export const GlobalHeader: React.FC = () => {
           {/* Workspace Launch / Request Demo Button */}
           <Link
             href="/contact"
-            onClick={() => appleAudio.playClick()}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200/80 text-xs font-bold transition-all shadow-2xs hover:shadow-xs"
           >
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
@@ -127,10 +120,7 @@ export const GlobalHeader: React.FC = () => {
           {user.isAuthenticated ? (
             <div className="relative">
               <button
-                onClick={() => {
-                  appleAudio.playClick();
-                  setProfileMenuOpen(!profileMenuOpen);
-                }}
+                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
                 className="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-full bg-white border border-slate-200/90 shadow-xs hover:border-slate-300 hover:shadow-sm active:scale-95 transition-all cursor-pointer"
               >
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-slate-900 to-blue-600 text-white flex items-center justify-center font-bold text-xs ring-2 ring-emerald-500/80">
@@ -160,10 +150,7 @@ export const GlobalHeader: React.FC = () => {
                   <div className="py-2 space-y-1 text-xs font-medium text-slate-700">
                     <Link
                       href="/profile"
-                      onClick={() => {
-                        appleAudio.playClick();
-                        setProfileMenuOpen(false);
-                      }}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100/80 transition-colors"
                     >
                       <User className="w-4 h-4 text-slate-500" />
@@ -171,10 +158,7 @@ export const GlobalHeader: React.FC = () => {
                     </Link>
                     <Link
                       href="/profile#silicondna"
-                      onClick={() => {
-                        appleAudio.playClick();
-                        setProfileMenuOpen(false);
-                      }}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100/80 transition-colors"
                     >
                       <ShieldCheck className="w-4 h-4 text-indigo-500" />
@@ -182,10 +166,7 @@ export const GlobalHeader: React.FC = () => {
                     </Link>
                     <Link
                       href="/profile#keys"
-                      onClick={() => {
-                        appleAudio.playClick();
-                        setProfileMenuOpen(false);
-                      }}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100/80 transition-colors"
                     >
                       <Key className="w-4 h-4 text-amber-500" />
@@ -193,10 +174,7 @@ export const GlobalHeader: React.FC = () => {
                     </Link>
                     <Link
                       href="/profile#settings"
-                      onClick={() => {
-                        appleAudio.playClick();
-                        setProfileMenuOpen(false);
-                      }}
+                      onClick={() => setProfileMenuOpen(false)}
                       className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-slate-100/80 transition-colors"
                     >
                       <Settings className="w-4 h-4 text-slate-500" />
@@ -207,7 +185,6 @@ export const GlobalHeader: React.FC = () => {
                   <div className="pt-2 border-t border-slate-200/80">
                     <button
                       onClick={() => {
-                        appleAudio.playClick();
                         logout();
                         setProfileMenuOpen(false);
                       }}
@@ -226,7 +203,6 @@ export const GlobalHeader: React.FC = () => {
           ) : (
             <Link
               href="/login"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs"
             >
               <User className="w-3.5 h-3.5" />
@@ -236,10 +212,7 @@ export const GlobalHeader: React.FC = () => {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => {
-              appleAudio.playClick();
-              setMobileMenuOpen(!mobileMenuOpen);
-            }}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 lg:hidden active:scale-95 transition-all cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -256,10 +229,7 @@ export const GlobalHeader: React.FC = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => {
-                  appleAudio.playClick();
-                  setMobileMenuOpen(false);
-                }}
+                onClick={() => setMobileMenuOpen(false)}
                 className={`px-3 py-2.5 rounded-xl transition-all ${
                   pathname === link.href ? 'bg-blue-50 text-blue-600 font-bold' : 'text-slate-700 hover:bg-slate-100'
                 }`}
@@ -271,10 +241,7 @@ export const GlobalHeader: React.FC = () => {
           <div className="pt-2 border-t border-slate-100">
             <Link
               href="/contact"
-              onClick={() => {
-                appleAudio.playClick();
-                setMobileMenuOpen(false);
-              }}
+              onClick={() => setMobileMenuOpen(false)}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-bold"
             >
               Request Enterprise Workspace

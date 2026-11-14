@@ -24,7 +24,6 @@ function IndividualServiceContent() {
   const [probeResult, setProbeResult] = useState<string | null>(null);
 
   const handleTestProbe = () => {
-    appleAudio.playClick();
     setIsRunningProbe(true);
     setProbeResult(null);
 
@@ -42,11 +41,11 @@ function IndividualServiceContent() {
       {/* Breadcrumb & Navigation */}
       <div className="max-w-7xl mx-auto px-6 pt-8 pb-4">
         <div className="flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/services" onClick={() => appleAudio.playClick()} className="hover:text-slate-800">
+          <Link href="/services" className="hover:text-slate-800">
             Services
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link href={`/services/${category.id}`} onClick={() => appleAudio.playClick()} className="hover:text-slate-800">
+          <Link href={`/services/${category.id}`} className="hover:text-slate-800">
             {category.name}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
@@ -105,7 +104,6 @@ function IndividualServiceContent() {
 
             <Link
               href="/contact"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-xs shadow-xs hover:bg-slate-50 active:scale-95 transition-all"
             >
               <span>Request Production SLA</span>
@@ -171,7 +169,6 @@ function IndividualServiceContent() {
                   <Link
                     key={idx}
                     href={rel.href}
-                    onClick={() => appleAudio.playClick()}
                     className="block p-3 rounded-2xl bg-white/80 border border-slate-200/80 hover:border-blue-300 hover:bg-white transition-all group"
                   >
                     <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
@@ -192,7 +189,6 @@ function IndividualServiceContent() {
               </p>
               <Link
                 href="/products"
-                onClick={() => appleAudio.playClick()}
                 className="inline-block px-4 py-2 rounded-xl bg-white text-blue-600 font-bold text-xs hover:bg-blue-50 transition-colors"
               >
                 View Deployment Specs

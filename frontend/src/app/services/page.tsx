@@ -10,7 +10,6 @@ import {
 import { GlobalHeader } from '@/components/navigation/GlobalHeader';
 import { SERVICES_CATEGORIES } from '@/components/navigation/ServicesMegaMenu';
 import { INDUSTRIES_LIST } from '@/components/IndustrySelector';
-import { appleAudio } from '@/lib/audio';
 
 export default function ServicesHubPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +52,6 @@ export default function ServicesHubPage() {
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
               href="/services/diagnostic-mri/universal-scanner"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all"
             >
               <Zap className="w-4 h-4 text-cyan-400" />
@@ -62,7 +60,6 @@ export default function ServicesHubPage() {
 
             <Link
               href="/contact"
-              onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white border border-slate-200/90 text-slate-700 font-bold text-xs shadow-xs hover:border-slate-300 hover:bg-slate-50 active:scale-95 transition-all"
             >
               <span>Schedule Architecture Review</span>
@@ -90,7 +87,7 @@ export default function ServicesHubPage() {
           {/* Category Filter Pills */}
           <div className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
             <button
-              onClick={() => { appleAudio.playClick(); setSelectedCategory('ALL'); }}
+              onClick={() => setSelectedCategory('ALL')}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedCategory === 'ALL'
                   ? 'bg-blue-600 text-white shadow-xs'
@@ -102,7 +99,7 @@ export default function ServicesHubPage() {
             {SERVICES_CATEGORIES.map((c) => (
               <button
                 key={c.id}
-                onClick={() => { appleAudio.playClick(); setSelectedCategory(c.id); }}
+                onClick={() => setSelectedCategory(c.id)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                   selectedCategory === c.id
                     ? 'bg-blue-600 text-white shadow-xs'
@@ -136,7 +133,6 @@ export default function ServicesHubPage() {
 
                 <Link
                   href={`/services/${cat.id}`}
-                  onClick={() => appleAudio.playClick()}
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 group"
                 >
                   <span>Explore All {cat.name}</span>
@@ -150,7 +146,6 @@ export default function ServicesHubPage() {
                   <Link
                     key={idx}
                     href={item.href}
-                    onClick={() => appleAudio.playClick()}
                     className={`p-5 rounded-3xl apple-glassdoor border transition-all text-left flex flex-col justify-between group hover:scale-[1.01] hover:shadow-lg ${
                       item.isHighlight 
                         ? 'border-blue-300 bg-gradient-to-br from-blue-50/50 to-white' 
@@ -227,7 +222,6 @@ export default function ServicesHubPage() {
                   </span>
                   <Link
                     href={`/services/industry-solutions`}
-                    onClick={() => appleAudio.playClick()}
                     className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-0.5"
                   >
                     <span>Blueprint</span>
@@ -256,7 +250,6 @@ export default function ServicesHubPage() {
           </div>
           <Link
             href="/contact"
-            onClick={() => appleAudio.playClick()}
             className="px-5 py-2.5 rounded-2xl bg-white text-slate-900 font-bold text-xs hover:bg-slate-100 active:scale-95 transition-all shadow-md shrink-0"
           >
             Contact Systems Architect

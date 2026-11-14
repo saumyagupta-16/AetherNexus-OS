@@ -9,7 +9,6 @@ import {
 } from 'lucide-react';
 import { GlobalHeader } from '@/components/navigation/GlobalHeader';
 import { SERVICES_CATEGORIES } from '@/components/navigation/ServicesMegaMenu';
-import { appleAudio } from '@/lib/audio';
 
 function CategoryDetailContent() {
   const params = useParams();
@@ -27,7 +26,6 @@ function CategoryDetailContent() {
         <div className="max-w-7xl mx-auto space-y-4">
           <Link
             href="/services"
-            onClick={() => appleAudio.playClick()}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -51,7 +49,6 @@ function CategoryDetailContent() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/services/diagnostic-mri/universal-scanner"
-                onClick={() => appleAudio.playClick()}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 active:scale-95 transition-all"
               >
                 <Zap className="w-3.5 h-3.5 text-cyan-400" />
@@ -115,7 +112,6 @@ function CategoryDetailContent() {
                 </div>
                 <Link
                   href={item.href}
-                  onClick={() => appleAudio.playClick()}
                   className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs transition-colors"
                 >
                   <span>Explore Service Specification</span>
@@ -138,7 +134,6 @@ function CategoryDetailContent() {
           </div>
           <Link
             href="/contact"
-            onClick={() => appleAudio.playClick()}
             className="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors shrink-0"
           >
             Request Custom POC

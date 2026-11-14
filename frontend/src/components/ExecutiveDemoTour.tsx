@@ -77,7 +77,6 @@ export const ExecutiveDemoTour: React.FC<ExecutiveDemoTourProps> = ({
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const startTour = async () => {
-    appleAudio.playClick();
     setIsRunning(true);
     setCurrentStepIndex(0);
 
@@ -108,7 +107,6 @@ export const ExecutiveDemoTour: React.FC<ExecutiveDemoTourProps> = ({
     // Step 5: Time-Machine Scrubber
     setCurrentStepIndex(4);
     onScrubTime(15);
-    appleAudio.playClick();
     await new Promise((r) => setTimeout(r, 6000));
 
     // Complete & Normalize
@@ -119,7 +117,6 @@ export const ExecutiveDemoTour: React.FC<ExecutiveDemoTourProps> = ({
   };
 
   const stopTour = async () => {
-    appleAudio.playClick();
     setIsRunning(false);
     onScrubTime(0);
     await onResetAll();

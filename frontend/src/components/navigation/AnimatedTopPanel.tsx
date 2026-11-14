@@ -24,7 +24,6 @@ export const AnimatedTopPanel: React.FC<AnimatedTopPanelProps> = ({
   const [isMriScanning, setIsMriScanning] = useState(false);
 
   const handleMriClick = async () => {
-    if (telemetry.soundEnabled) appleAudio.playClick();
     setIsMriScanning(true);
     if (onTriggerMri) {
       onTriggerMri();
@@ -36,7 +35,6 @@ export const AnimatedTopPanel: React.FC<AnimatedTopPanelProps> = ({
   };
 
   const handleGhostRadarClick = () => {
-    if (telemetry.soundEnabled) appleAudio.playClick();
     if (onOpenGhostRadar) {
       onOpenGhostRadar();
     } else {
@@ -45,7 +43,6 @@ export const AnimatedTopPanel: React.FC<AnimatedTopPanelProps> = ({
   };
 
   const handleTimeMachineClick = () => {
-    if (telemetry.soundEnabled) appleAudio.playClick();
     if (onToggleTimeMachine) {
       onToggleTimeMachine();
     } else {
@@ -61,9 +58,6 @@ export const AnimatedTopPanel: React.FC<AnimatedTopPanelProps> = ({
       <div 
         className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/80 border border-slate-200/80 text-xs font-semibold shadow-xs select-none hover:bg-white transition-colors cursor-pointer"
         title="50Hz High-Speed Sensor Telemetry Stream (20ms frames)"
-        onClick={() => {
-          if (telemetry.soundEnabled) appleAudio.playClick();
-        }}
       >
         <span 
           className={`w-2 h-2 rounded-full ${

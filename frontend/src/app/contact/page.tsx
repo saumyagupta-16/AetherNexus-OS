@@ -21,7 +21,6 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    appleAudio.playClick();
     setSubmitted(true);
     appleAudio.playRestore();
   };
@@ -67,7 +66,7 @@ export default function ContactPage() {
                     Thank you. Our enterprise solutions lead and Systems Architect Saumya Gupta will review your submission and connect within 4 business hours with custom sandbox access credentials.
                   </p>
                   <button
-                    onClick={() => { appleAudio.playClick(); setSubmitted(false); }}
+                    onClick={() => setSubmitted(false)}
                     className="mt-2 text-xs font-bold text-emerald-800 underline"
                   >
                     Send another inquiry

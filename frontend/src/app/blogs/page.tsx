@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { BookOpen, Search, ArrowRight, Clock, User, Calendar, Sparkles, Tag } from 'lucide-react';
 import { GlobalHeader } from '@/components/navigation/GlobalHeader';
-import { appleAudio } from '@/lib/audio';
 
 const ARTICLES = [
   {
@@ -112,7 +111,7 @@ export default function BlogsPage() {
             {tags.map((t) => (
               <button
                 key={t}
-                onClick={() => { appleAudio.playClick(); setSelectedTag(t); }}
+                onClick={() => setSelectedTag(t)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                   selectedTag === t
                     ? 'bg-blue-600 text-white shadow-xs'
@@ -160,7 +159,6 @@ export default function BlogsPage() {
                 </div>
                 <Link
                   href={art.href}
-                  onClick={() => appleAudio.playClick()}
                   className="font-bold text-blue-600 hover:underline flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                 >
                   <span>Read Article</span>

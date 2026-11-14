@@ -6,7 +6,6 @@ import {
   Zap, Activity, Shield, Cpu, RefreshCw, Layers, FileText, 
   ArrowRight, Radio, Cloud, Database, Bot, Lock, Wrench, CheckCircle2 
 } from 'lucide-react';
-import { appleAudio } from '@/lib/audio';
 
 interface ServicesMegaMenuProps {
   onClose: () => void;
@@ -143,7 +142,7 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
         </div>
         <Link
           href="/services"
-          onClick={() => { appleAudio.playClick(); onClose(); }}
+          onClick={() => onClose()}
           className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group"
         >
           <span>Explore Master Directory</span>
@@ -160,14 +159,8 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
             return (
               <button
                 key={cat.id}
-                onMouseEnter={() => {
-                  appleAudio.playClick();
-                  setActiveCategory(cat.id);
-                }}
-                onClick={() => {
-                  appleAudio.playClick();
-                  setActiveCategory(cat.id);
-                }}
+                onMouseEnter={() => setActiveCategory(cat.id)}
+                onClick={() => setActiveCategory(cat.id)}
                 className={`w-full text-left flex items-start gap-3 p-2.5 rounded-xl transition-all ${
                   isSelected 
                     ? 'bg-blue-600 text-white shadow-xs' 
@@ -207,7 +200,7 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
               </h4>
               <Link
                 href={`/services/${selectedCategory.id}`}
-                onClick={() => { appleAudio.playClick(); onClose(); }}
+                onClick={() => onClose()}
                 className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
               >
                 <span>View Category Hub</span>
@@ -220,7 +213,7 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
                 <Link
                   key={idx}
                   href={item.href}
-                  onClick={() => { appleAudio.playClick(); onClose(); }}
+                  onClick={() => onClose()}
                   className={`group p-2.5 rounded-xl border transition-all text-left block ${
                     item.isHighlight 
                       ? 'bg-blue-50/70 border-blue-200/80 hover:bg-blue-50 hover:border-blue-300' 
@@ -254,7 +247,7 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
             </div>
             <Link
               href="/services/diagnostic-mri/universal-scanner"
-              onClick={() => { appleAudio.playClick(); onClose(); }}
+              onClick={() => onClose()}
               className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs"
             >
               Run Free 10-Probe Diagnostic MRI

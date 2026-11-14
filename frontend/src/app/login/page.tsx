@@ -17,7 +17,6 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    appleAudio.playClick();
     setErrorMessage('');
     setIsLoading(true);
 
@@ -126,10 +125,7 @@ export default function LoginPage() {
             />
             <button
               type="button"
-              onClick={() => {
-                appleAudio.playClick();
-                setShowPassword(!showPassword);
-              }}
+              onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 p-1 text-slate-400 hover:text-slate-600 rounded-lg transition-colors cursor-pointer active:scale-90"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >

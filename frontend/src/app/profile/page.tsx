@@ -16,14 +16,12 @@ export default function ProfilePage() {
   const [apiKey, setApiKey] = useState('aeth_live_8f3d2a91b4c7e602f9');
 
   const handleCopyKey = () => {
-    appleAudio.playClick();
     navigator.clipboard.writeText(apiKey);
     setCopiedKey(true);
     setTimeout(() => setCopiedKey(false), 2000);
   };
 
   const handleRegenerateKey = () => {
-    appleAudio.playClick();
     const newKey = 'aeth_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     setApiKey(newKey);
     appleAudio.playRestore();
@@ -55,7 +53,7 @@ export default function ProfilePage() {
           </div>
 
           <button
-            onClick={() => { appleAudio.playClick(); logout(); }}
+            onClick={() => logout()}
             className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-bold text-xs transition-colors self-start sm:self-auto cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
@@ -79,7 +77,6 @@ export default function ProfilePage() {
               <select
                 value={user.role}
                 onChange={(e) => {
-                  appleAudio.playClick();
                   switchRole(e.target.value);
                 }}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-medium text-slate-800 shadow-2xs cursor-pointer"
@@ -97,7 +94,6 @@ export default function ProfilePage() {
               <select
                 value={user.orgSlug}
                 onChange={(e) => {
-                  appleAudio.playClick();
                   switchOrganization(e.target.value);
                 }}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-medium text-slate-800 shadow-2xs cursor-pointer"

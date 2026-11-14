@@ -124,7 +124,6 @@ export function EnterpriseCommandCenter() {
   }, []);
 
   const handleRoleChange = (roleId: string) => {
-    appleAudio.playClick();
     setCurrentRole(roleId);
     switchRole(roleId);
   };
@@ -145,7 +144,6 @@ export function EnterpriseCommandCenter() {
 
   const handleSimulateIntrusion = async (intruded: boolean) => {
     if (intruded) appleAudio.playAlert();
-    else appleAudio.playClick();
 
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(
@@ -158,7 +156,6 @@ export function EnterpriseCommandCenter() {
   };
 
   const handleResetLockdown = async () => {
-    appleAudio.playClick();
     setIsLockdownActive(false);
     try {
       await fetch(`${API_BASE}/api/chaos/ghost-radar`, {
@@ -170,7 +167,6 @@ export function EnterpriseCommandCenter() {
   };
 
   const handleRunMRIScan = async () => {
-    appleAudio.playClick();
     try {
       const res = await fetch(`${API_BASE}/api/diagnostic/mri-scan`, {
         method: 'POST',
@@ -184,7 +180,6 @@ export function EnterpriseCommandCenter() {
   };
 
   const handleDownloadPdf = async () => {
-    appleAudio.playClick();
     try {
       await fetch(`${API_BASE}/api/diagnostic/download-pdf`, {
         method: 'POST',
@@ -195,7 +190,6 @@ export function EnterpriseCommandCenter() {
   };
 
   const handleSimulateBreakage = async () => {
-    appleAudio.playClick();
     const res = await fetch(`${API_BASE}/api/chaos/simulate-breakage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

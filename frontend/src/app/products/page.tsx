@@ -7,7 +7,6 @@ import {
   ArrowRight, Download, Server, Sparkles, Terminal 
 } from 'lucide-react';
 import { GlobalHeader } from '@/components/navigation/GlobalHeader';
-import { appleAudio } from '@/lib/audio';
 
 const PRODUCTS = [
   {
@@ -135,7 +134,6 @@ export default function ProductsPage() {
                 <div className="mt-8 pt-4 border-t border-slate-100">
                   <Link
                     href={prod.href}
-                    onClick={() => appleAudio.playClick()}
                     className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-900 text-white hover:bg-slate-800 font-bold text-xs transition-colors shadow-xs"
                   >
                     <span>{prod.ctaText}</span>

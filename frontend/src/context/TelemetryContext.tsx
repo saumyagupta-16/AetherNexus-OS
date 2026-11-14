@@ -62,7 +62,7 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const [currentIndustry, setCurrentIndustry] = useState('IIOT');
   const [telemetryHistory, setTelemetryHistory] = useState<TelemetryPoint[]>([]);
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   // Modals & Panels state
   const [isTimeMachineOpen, setIsTimeMachineOpen] = useState(false);
@@ -144,25 +144,18 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   }, []);
 
   const setIndustry = (ind: string) => {
-    if (soundEnabled) appleAudio.playClick();
     setCurrentIndustry(ind);
   };
 
   const toggleSound = () => {
-    setSoundEnabled((prev) => {
-      const next = !prev;
-      if (next) appleAudio.playClick();
-      return next;
-    });
+    setSoundEnabled((prev) => !prev);
   };
 
   const toggleTimeMachine = () => {
-    if (soundEnabled) appleAudio.playClick();
     setIsTimeMachineOpen((prev) => !prev);
   };
 
   const openMriModal = () => {
-    if (soundEnabled) appleAudio.playClick();
     setIsMriModalOpen(true);
   };
 
@@ -171,7 +164,6 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const openGhostRadar = () => {
-    if (soundEnabled) appleAudio.playClick();
     setIsGhostRadarOpen(true);
   };
 
@@ -210,7 +202,6 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const resetLockdown = async () => {
-    if (soundEnabled) appleAudio.playClick();
     setRadarVariance(0.28);
     setRadarState('CLEAR');
     setIsLockdownActive(false);
@@ -224,7 +215,6 @@ export const TelemetryProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const runMriScan = async (targetUrl: string = 'https://api.aethernexus.ai') => {
-    if (soundEnabled) appleAudio.playClick();
     try {
       const res = await fetch(`${API_BASE}/api/diagnostic/mri-scan`, {
         method: 'POST',
