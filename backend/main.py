@@ -39,6 +39,7 @@ from time_machine import time_machine_engine
 from mri_scanner import mri_scanner
 from pdf_generator import pdf_generator
 from api_proxy import api_proxy_engine
+from services_engine import services_engine, ProvisionWorkspaceRequest
 
 # Active WebSocket subscribers
 connected_websockets: List[WebSocket] = []
@@ -559,6 +560,23 @@ def query_stark_copilot(req: CopilotQueryRequest):
             "reply": f"Stark Copilot online. Telemetry bus streaming at 50Hz across 50 nodes. Ready for diagnostic command.",
             "action_executed": "NONE"
         }
+
+# --- Multi-Tenant Workspace Provisioning Endpoints ---
+
+@app.post("/api/workspaces/provision")
+def provision_enterprise_workspace(req: ProvisionWorkspaceRequest):
+    return services_engine.provision_workspace(req)
+
+@app.get("/api/workspaces")
+def list_enterprise_workspaces():
+    return services_engine.list_workspaces()
+
+@app.get("/api/workspaces/{slug}")
+def get_enterprise_workspace(slug: str):
+    ws = services_engine.get_workspace(slug)
+    if not ws:
+        raise HTTPException(status_code=404, detail=f"Workspace '{slug}' not found")
+    return ws
 
 if __name__ == "__main__":
     import uvicorn

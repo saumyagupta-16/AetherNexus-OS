@@ -49,8 +49,9 @@ import { useAuth } from '@/context/AuthContext';
 const API_BASE = 'http://localhost:8000';
 const WS_URL = 'ws://localhost:8000/ws/telemetry';
 
-export function EnterpriseCommandCenter() {
+export function EnterpriseCommandCenter({ orgSlug }: { orgSlug?: string } = {}) {
   const { user, switchRole } = useAuth();
+  const activeSlug = orgSlug || user.orgSlug;
   const [currentRole, setCurrentRole] = useState('IOT_ENGINEER');
   const [currentIndustry, setCurrentIndustry] = useState('IIOT');
 
@@ -205,7 +206,7 @@ export function EnterpriseCommandCenter() {
         <div>
           <h2 className="text-lg font-bold text-slate-900">Enterprise Service Workspace</h2>
           <p className="text-xs text-slate-500">
-            Active Organization: <span className="font-semibold text-slate-700">app.aethernexus.ai/{user.orgSlug}</span>
+            Active Organization: <span className="font-semibold text-slate-700">app.aethernexus.ai/{activeSlug}</span>
           </p>
         </div>
         <RoleSwitcher currentRole={currentRole} onRoleChange={handleRoleChange} />

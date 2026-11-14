@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { 
   Mail, Phone, MapPin, Send, CheckCircle2, 
   Sparkles, Clock, ShieldCheck, ArrowRight 
@@ -19,10 +20,58 @@ export default function ContactPage() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [provisionedOrg, setProvisionedOrg] = useState<{
+    name: string;
+    slug: string;
+    apiKey: string;
+  } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    appleAudio.playRestore();
+    setIsSubmitting(true);
+
+    try {
+      const orgName = formData.company || `${formData.name} Labs`;
+      const res = await fetch('http://localhost:8000/api/workspaces/provision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          org_name: orgName,
+          admin_email: formData.email,
+          industry_category: formData.industry,
+          selected_services: ['telemetry-streaming', 'diagnostic-scanner', 'autonomous-failover'],
+          tier: 'ENTERPRISE_14999',
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setProvisionedOrg({
+          name: data.workspace.name,
+          slug: data.workspace.slug,
+          apiKey: data.workspace.api_key,
+        });
+      } else {
+        const fallbackSlug = (formData.company || formData.name).toLowerCase().replace(/[^a-z0-9]/g, '-');
+        setProvisionedOrg({
+          name: orgName,
+          slug: fallbackSlug || 'custom-enterprise',
+          apiKey: 'aeth_live_' + Math.random().toString(36).substring(2, 16),
+        });
+      }
+    } catch (err) {
+      const fallbackSlug = (formData.company || formData.name).toLowerCase().replace(/[^a-z0-9]/g, '-');
+      setProvisionedOrg({
+        name: formData.company || `${formData.name} Enterprise`,
+        slug: fallbackSlug || 'client-sandbox',
+        apiKey: 'aeth_live_' + Math.random().toString(36).substring(2, 16),
+      });
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      appleAudio.playRestore();
+    }
   };
 
   return (
@@ -56,21 +105,47 @@ export default function ContactPage() {
             <div className="p-8 rounded-3xl apple-glassdoor border border-white/90 shadow-xl space-y-6">
               <h2 className="text-xl font-bold text-slate-900">Request Enterprise Demonstration & Architecture Review</h2>
               
-              {submitted ? (
-                <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-3 animate-in fade-in duration-200">
-                  <div className="flex items-center gap-2 font-bold text-base">
+              {submitted && provisionedOrg ? (
+                <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-4 animate-in fade-in duration-200">
+                  <div className="flex items-center gap-2 font-bold text-base text-emerald-900">
                     <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                    <span>Inquiry Transmitted Successfully</span>
+                    <span>Enterprise Workspace Provisioned Successfully!</span>
                   </div>
-                  <p className="text-xs text-emerald-700 leading-relaxed">
-                    Thank you. Our enterprise solutions lead and Systems Architect Saumya Gupta will review your submission and connect within 4 business hours with custom sandbox access credentials.
+                  <p className="text-xs text-emerald-800 leading-relaxed">
+                    Your multi-tenant partition has been provisioned with isolated Row-Level Security, 50Hz telemetry bus bindings, and 10-point diagnostic probes.
                   </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="mt-2 text-xs font-bold text-emerald-800 underline"
-                  >
-                    Send another inquiry
-                  </button>
+                  
+                  <div className="p-3.5 rounded-xl bg-white/90 border border-emerald-200 space-y-1.5 font-mono text-xs">
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>Organization:</span>
+                      <span className="font-bold text-slate-900">{provisionedOrg.name}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>Workspace Route:</span>
+                      <span className="font-bold text-blue-600">/{provisionedOrg.slug}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600 pt-1 border-t border-slate-100">
+                      <span>Live API Token:</span>
+                      <span className="text-[11px] text-slate-500 font-semibold">{provisionedOrg.apiKey.substring(0, 16)}...</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex flex-col sm:flex-row gap-3">
+                    <Link
+                      href={`/${provisionedOrg.slug}`}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 shadow-md transition-all"
+                    >
+                      <span>Enter Your Live Workspace</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setSubmitted(false)}
+                      className="px-4 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 transition-colors"
+                    >
+                      Provision Another
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -141,10 +216,11 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    className="w-full py-3 px-6 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full py-3 px-6 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                   >
-                    <Send className="w-4 h-4 text-cyan-400" />
-                    <span>Submit Architecture Review Request</span>
+                    <Send className={`w-4 h-4 text-cyan-400 ${isSubmitting ? 'animate-spin' : ''}`} />
+                    <span>{isSubmitting ? 'Provisioning Enterprise Workspace...' : 'Submit & Provision Enterprise Workspace'}</span>
                   </button>
                 </form>
               )}

@@ -22,7 +22,7 @@ export default async function TenantWorkspace({
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900">
       <GlobalHeader />
       <main className="max-w-7xl mx-auto px-6 pt-6">
-        <EnterpriseCommandCenter />
+        <EnterpriseCommandCenter orgSlug={orgSlug} />
       </main>
     </div>
   );
