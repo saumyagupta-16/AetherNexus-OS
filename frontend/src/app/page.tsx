@@ -305,7 +305,7 @@ export default function HomePage() {
             return (
               <div
                 key={cat.id}
-                className="p-7 rounded-3xl apple-glassdoor border border-white/90 hover:border-blue-300 hover:shadow-xl transition-all flex flex-col justify-between group"
+                className="p-7 rounded-3xl bg-white border border-slate-200/90 hover:border-blue-400 hover:shadow-xl transition-all flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
@@ -505,11 +505,12 @@ export default function HomePage() {
           <div className="space-y-2.5">
             <div className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Services</div>
             <ul className="space-y-1.5">
-              <li><Link href="/services/platform-core" className="hover:text-slate-800">Platform Core</Link></li>
-              <li><Link href="/services/diagnostic-mri" className="hover:text-slate-800">Diagnostic MRI</Link></li>
-              <li><Link href="/services/industry-solutions" className="hover:text-slate-800">Industry Blueprints</Link></li>
-              <li><Link href="/services/autonomous-agents" className="hover:text-slate-800">AI Swarm Agents</Link></li>
-              <li><Link href="/services/role-workspaces" className="hover:text-slate-800">Role Workspaces</Link></li>
+              <li><Link href="/services/cloud-platform" className="hover:text-slate-800">Cloud & Platform</Link></li>
+              <li><Link href="/services/quality-compliance" className="hover:text-slate-800">Quality & Compliance</Link></li>
+              <li><Link href="/services/iot-edge" className="hover:text-slate-800">IoT & Edge Devices</Link></li>
+              <li><Link href="/services/cybersecurity-identity" className="hover:text-slate-800">Cybersecurity & Identity</Link></li>
+              <li><Link href="/services/ai-automation" className="hover:text-slate-800">Autonomous AI</Link></li>
+              <li><Link href="/services/managed-advisory" className="hover:text-slate-800">Enterprise Consulting</Link></li>
             </ul>
           </div>
 

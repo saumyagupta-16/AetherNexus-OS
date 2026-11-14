@@ -51,11 +51,11 @@ export default function ServicesHubPage() {
           {/* Quick CTA Actions */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
-              href="/services/diagnostic-mri/universal-scanner"
+              href="/services/quality-compliance/diagnostic-scanner"
               className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all"
             >
               <Zap className="w-4 h-4 text-cyan-400" />
-              <span>Launch Live Diagnostic MRI</span>
+              <span>Launch 10-Point Health Scan</span>
             </Link>
 
             <Link

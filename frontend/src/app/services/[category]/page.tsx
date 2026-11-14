@@ -48,11 +48,11 @@ function CategoryDetailContent() {
 
             <div className="flex flex-wrap items-center gap-3">
               <Link
-                href="/services/diagnostic-mri/universal-scanner"
+                href="/services/quality-compliance/diagnostic-scanner"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-md hover:bg-slate-800 active:scale-95 transition-all"
               >
                 <Zap className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Run 10-Probe MRI</span>
+                <span>Run 10-Point Health Scan</span>
               </Link>
             </div>
           </div>

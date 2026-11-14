@@ -80,7 +80,7 @@ export const GlobalHeader: React.FC = () => {
 
                   {/* Services Mega-Menu Flyout */}
                   {servicesMenuOpen && (
-                    <div className="absolute top-full -left-32 pt-3 w-[880px]">
+                    <div className="absolute top-full -left-28 pt-3 w-[920px] z-50">
                       <ServicesMegaMenu onClose={() => setServicesMenuOpen(false)} />
                     </div>
                   )}
@@ -136,7 +136,7 @@ export const GlobalHeader: React.FC = () => {
               {/* Profile Dropdown Menu */}
               {profileMenuOpen && (
                 <div 
-                  className="absolute right-0 mt-2 w-72 apple-glassdoor rounded-2xl border border-white/90 p-3 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute right-0 mt-2 w-72 bg-white rounded-2xl border border-slate-200/90 p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   onMouseLeave={() => setProfileMenuOpen(false)}
                 >
                   <div className="pb-3 border-b border-slate-200/80">

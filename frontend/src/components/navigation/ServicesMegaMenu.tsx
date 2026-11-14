@@ -3,149 +3,130 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  Zap, Activity, Shield, Cpu, RefreshCw, Layers, FileText, 
-  ArrowRight, Radio, Cloud, Database, Bot, Lock, Wrench, CheckCircle2 
+  Cloud, Activity, Cpu, Shield, Bot, Wrench, 
+  ArrowRight, CheckCircle2, ChevronRight, Sparkles 
 } from 'lucide-react';
 
 interface ServicesMegaMenuProps {
   onClose: () => void;
 }
 
-interface CategoryItem {
+export interface CategoryItem {
   id: string;
   name: string;
   icon: any;
   tagline: string;
   badge?: string;
-  items: { title: string; href: string; desc: string; isHighlight?: boolean }[];
+  items: { id: string; title: string; href: string; desc: string; isHighlight?: boolean }[];
 }
 
 export const SERVICES_CATEGORIES: CategoryItem[] = [
   {
-    id: 'platform-core',
-    name: 'Platform Core & Frontier Tech',
-    icon: Zap,
-    tagline: '5 Deep-Tech Breakthroughs',
+    id: 'cloud-platform',
+    name: 'Cloud & Platform Engineering',
+    icon: Cloud,
+    tagline: 'High-Throughput Streaming & Autonomous Failover',
     badge: 'Core Engine',
     items: [
-      { title: '50Hz Real-Time Telemetry Bus', href: '/services/platform-core/telemetry-bus', desc: 'Sub-20ms WebSocket streaming with 120fps canvas rendering' },
-      { title: 'MorphOS™ Phantom Sensor ML', href: '/services/platform-core/morphos-phantom-ml', desc: 'Cross-sensor ML failover in 12.8ms with 96.4% confidence', isHighlight: true },
-      { title: 'GhostRadar™ Camera-Free Sonar', href: '/services/platform-core/ghost-radar-sonar', desc: '50Hz Wi-Fi RF scattering detection (GDPR/HIPAA compliant)' },
-      { title: 'SiliconDNA™ Hardware PUF Vault', href: '/services/platform-core/silicon-dna-puf', desc: 'Unclonable 256-bit transistor gate threshold biometrics' },
-      { title: 'Cyber-Physical Time-Machine', href: '/services/platform-core/cyber-physical-time-machine', desc: '60-second in-memory ring buffer for post-mortem scrub' },
-      { title: 'Self-Morphing API Hotfix Proxy', href: '/services/platform-core/self-morphing-api-proxy', desc: 'Dynamic AST JSON rewriting & automatic GitHub PRs' },
+      { id: 'telemetry-streaming', title: 'High-Frequency Telemetry Streaming', href: '/services/cloud-platform/telemetry-streaming', desc: 'Sub-20ms WebSocket and MQTT v5 data streaming with zero-lag canvas visualization', isHighlight: true },
+      { id: 'autonomous-failover', title: 'Autonomous Failover & Redundancy Engine', href: '/services/cloud-platform/autonomous-failover', desc: 'Sub-15ms machine-learning state recovery preventing single-point-of-failure downtime' },
+      { id: 'time-series-replay', title: 'Time-Series Recording & Incident Replay', href: '/services/cloud-platform/time-series-replay', desc: 'In-memory ring buffer for millisecond-accurate post-mortem root-cause analysis' },
+      { id: 'self-healing-gateway', title: 'Self-Healing API Gateway & Traffic Shaper', href: '/services/cloud-platform/self-healing-gateway', desc: 'Dynamic AST payload adaptation and automated GitHub PR hotfix generation' },
     ],
   },
   {
-    id: 'diagnostic-mri',
-    name: 'Diagnostic MRI & Quality Lab',
+    id: 'quality-compliance',
+    name: 'Quality Assurance & Compliance Auditing',
     icon: Activity,
-    tagline: 'Automated 10-Probe Inspections',
+    tagline: 'Automated 10-Point Probes & Certified Proofs',
     badge: 'Audit Ready',
     items: [
-      { title: 'Universal Diagnostic MRI Scanner', href: '/services/diagnostic-mri/universal-scanner', desc: '10 software & hardware probes with 0-100% health score', isHighlight: true },
-      { title: 'Cryptographic PDF Audit Certs', href: '/services/diagnostic-mri/audit-certificates', desc: 'Downloadable signed PDF compliance proofs (ISO/SOC2)' },
-      { title: 'Boundary Chaos & SQLi Fuzzing', href: '/services/diagnostic-mri/chaos-engineering', desc: '500+ stepped concurrent chaos requests & rate-limit checks' },
-      { title: 'Sub-millisecond Latency Profiler', href: '/services/diagnostic-mri#latency', desc: 'Microsecond TTFB, DNS, TLS, and P99 jitter decomposition' },
-      { title: 'Broken Link & DOM Console Scan', href: '/services/diagnostic-mri#dom-audit', desc: 'Headless Chromium crawl for uncaught JS exceptions' },
+      { id: 'diagnostic-scanner', title: '10-Point Enterprise Health Scanner', href: '/services/quality-compliance/diagnostic-scanner', desc: 'Automated diagnostic matrix inspecting API, network, database, and hardware states', isHighlight: true },
+      { id: 'compliance-certificates', title: 'Cryptographically Signed Audit Reports', href: '/services/quality-compliance/compliance-certificates', desc: 'Downloadable tamper-evident PDF audit certificates aligned with ISO 27001 & SOC 2' },
+      { id: 'chaos-testing', title: 'Chaos Engineering & Resilience Labs', href: '/services/quality-compliance/chaos-testing', desc: 'Automated boundary fuzzing, rate-limit stress tests, and fault injection matrices' },
+      { id: 'latency-profiler', title: 'Sub-Millisecond Latency Profiler', href: '/services/quality-compliance/latency-profiler', desc: 'Microsecond TTFB, DNS, TLS, and P99 jitter decomposition across distributed nodes' },
     ],
   },
   {
-    id: 'industry-solutions',
-    name: 'Industry Vertical Blueprints',
-    icon: Layers,
-    tagline: '11 Tailored Enterprise Verticals',
-    badge: '11 Verticals',
+    id: 'iot-edge',
+    name: 'Embedded IoT & Edge Engineering',
+    icon: Cpu,
+    tagline: 'Hardware Bring-Up, Firmware & Sensor Telemetry',
+    badge: 'Hardware Ready',
     items: [
-      { title: 'Product IT Software Companies', href: '/services/industry-solutions/product-software', desc: 'Prevent breaking API releases & container OOM crashes' },
-      { title: 'IT Consulting & QA Services', href: '/services/industry-solutions/it-consulting-qa', desc: 'Multi-client staging MRI & white-label signed audit reports', isHighlight: true },
-      { title: 'Multi-Tenant SaaS Platforms', href: '/services/industry-solutions/saas-platforms', desc: 'Dead-letter webhook replays & per-tenant latency heatmaps' },
-      { title: 'Industrial IoT & Manufacturing', href: '/services/industry-solutions/industrial-iiot', desc: 'Conveyor wire-snap failover & turbine FFT vibration scope' },
-      { title: 'Consumer IoT & Smart Wearables', href: '/services/industry-solutions/consumer-wearables', desc: 'OTA firmware safe rollouts & battery drain profiling' },
-      { title: 'Cloud IaaS / PaaS & FinOps', href: '/services/industry-solutions/cloud-infrastructure', desc: 'Zombie compute termination & multi-cloud latency radar' },
-      { title: 'Cybersecurity & SecOps', href: '/services/industry-solutions/cybersecurity-secops', desc: 'Camera-free physical perimeter detection & hardware locks' },
-      { title: 'View All 11 Industry Blueprints →', href: '/services/industry-solutions', desc: 'Including AI Ops, Semiconductors, Telecoms, and MQTT Platforms' },
+      { id: 'edge-firmware', title: 'Enterprise Edge Firmware Development', href: '/services/iot-edge/edge-firmware', desc: 'Dual-core 240MHz FreeRTOS firmware with deterministic task scheduling and OTA healer', isHighlight: true },
+      { id: 'sensor-integration', title: 'Zero-Code Sensor Bus Integration', href: '/services/iot-edge/sensor-integration', desc: 'Automatic plug-and-play identification of voltage, current, vibration, and temperature sensors' },
+      { id: 'sensor-fusion', title: 'Sensor Fusion & Predictive Interpolation', href: '/services/iot-edge/sensor-fusion', desc: 'Cross-sensor mathematical algorithms maintaining data continuity during signal drops' },
+      { id: 'relay-controls', title: 'Physical Interlock & Actuator Control', href: '/services/iot-edge/relay-controls', desc: 'Hardened relay management, cooling fan automation, and electronic safety deadbolts' },
     ],
   },
   {
-    id: 'autonomous-agents',
-    name: 'Autonomous AI Swarm Agents',
+    id: 'cybersecurity-identity',
+    name: 'Cybersecurity & Hardware Identity',
+    icon: Shield,
+    tagline: 'Physical Layer Security & Zero-Trust Architecture',
+    badge: 'Zero-Trust',
+    items: [
+      { id: 'hardware-identity', title: 'Hardware Root-of-Trust & Device Identity', href: '/services/cybersecurity-identity/hardware-identity', desc: 'Transistor physical unclonable function (PUF) biometrics for unforgeable device keys', isHighlight: true },
+      { id: 'rf-perimeter-sensing', title: 'RF Perimeter & Non-Camera Security', href: '/services/cybersecurity-identity/rf-perimeter-sensing', desc: 'Non-invasive radio-frequency multipath scattering detection (100% GDPR/HIPAA compliant)' },
+      { id: 'tenant-isolation', title: 'Multi-Tenant Cryptographic Partitioning', href: '/services/cybersecurity-identity/tenant-isolation', desc: 'PostgreSQL Row-Level Security with isolated client keys and encrypted audit trails' },
+      { id: 'immutable-logs', title: 'Tamper-Evident Merkle Audit Trails', href: '/services/cybersecurity-identity/immutable-logs', desc: 'Cryptographically hashed operational records providing indisputable compliance proof' },
+    ],
+  },
+  {
+    id: 'ai-automation',
+    name: 'Autonomous AI & Workflow Automation',
     icon: Bot,
-    tagline: 'Self-Healing LangGraph Pipelines',
+    tagline: 'Intelligent Incident Triage & Self-Healing SRE',
     badge: 'AI Agents',
     items: [
-      { title: 'AutoQA Continuous Testing Agent', href: '/services/autonomous-agents/auto-qa', desc: 'Self-running Playwright & API fuzzing matrix generator' },
-      { title: 'SRE Self-Healing Watchdog', href: '/services/autonomous-agents/self-healing-watchdog', desc: 'Automated microsecond warm restarts & circuit breaking' },
-      { title: 'FinOps Cloud Cost Cutter Agent', href: '/services/autonomous-agents/finops-optimizer', desc: 'Orphaned EBS volume cleaner & k8s pod right-sizer' },
-      { title: 'NetHeal Telecom BGP Agent', href: '/services/autonomous-agents/netheal-failover', desc: 'Sub-85ms route convergence & tower anti-theft dispatch' },
-    ],
-  },
-  {
-    id: 'role-workspaces',
-    name: 'Role-Based Workspaces',
-    icon: Shield,
-    tagline: '5 Tailored Persona Consoles',
-    badge: 'RBAC',
-    items: [
-      { title: 'CEO & Founder Dashboard', href: '/services/role-workspaces/ceo-admin', desc: '99.99% SLA uptime, monthly cost saved, and ROI analytics' },
-      { title: 'QA Test Architect Workbench', href: '/services/role-workspaces/qa-architect', desc: 'Chaos payload lab, test flakiness, and signed PDF exports' },
-      { title: 'IoT & Hardware Lead Studio', href: '/services/role-workspaces/iot-engineer', desc: '50Hz scopes, I2C bus discovery, and wire-pull trigger' },
-      { title: 'SecOps & CISO Security Radar', href: '/services/role-workspaces/secops-lead', desc: 'GhostRadar RF sonar, token isolation, and hardware vaults' },
-      { title: 'Client Auditor Verification Portal', href: '/services/role-workspaces/client-auditor', desc: 'White-label SLA transparency and immutable audit proofs' },
-    ],
-  },
-  {
-    id: 'edge-hardware',
-    name: 'Edge Hardware & BSP',
-    icon: Cpu,
-    tagline: 'ESP32 & Cyber-Physical Interlocks',
-    items: [
-      { title: 'ESP32 AetherPod DevKit V1', href: '/services/edge-hardware/aether-pod', desc: 'Dual-core 240MHz FreeRTOS firmware & MQTT v5 bus' },
-      { title: 'Zero-Code 0x01-0x7F I2C Discovery', href: '/services/edge-hardware/sensor-integration', desc: 'Automatic plug-and-play identification of INA219, MPU6050' },
-      { title: 'Micro-Jitter Noise Sampling', href: '/services/edge-hardware#noise', desc: 'Cold-boot SRAM & ADC bandgap entropy collection' },
-      { title: 'Physical Relay Deadbolt Control', href: '/services/edge-hardware#relays', desc: 'GPIO 18 cooling fans and physical electronic deadbolts' },
+      { id: 'autonomous-sre', title: 'Autonomous SRE & Watchdog Agents', href: '/services/ai-automation/autonomous-sre', desc: 'Automated warm restarts, intelligent circuit-breaking, and self-healing pipelines', isHighlight: true },
+      { id: 'automated-testing', title: 'Continuous Automated QA Testing Agents', href: '/services/ai-automation/automated-testing', desc: 'Self-generating Playwright and API fuzzing suites with automated defect verification' },
+      { id: 'cloud-cost-optimizer', title: 'FinOps Cloud Resource & Cost Optimizer', href: '/services/ai-automation/cloud-cost-optimizer', desc: 'Automated detection and pruning of idle compute, orphan volumes, and over-provisioned nodes' },
+      { id: 'incident-copilot', title: 'AI Operational Copilot & Diagnostic Triage', href: '/services/ai-automation/incident-copilot', desc: 'Natural language interface for real-time telemetry inspection and root-cause resolution' },
     ],
   },
   {
     id: 'managed-advisory',
-    name: 'Enterprise Advisory & SRE',
+    name: 'Enterprise Consulting & 24/7 Managed SRE',
     icon: Wrench,
-    tagline: 'AetherNexus Professional Services',
+    tagline: 'Architecture Strategy, Cloud Migration & Dedicated SLAs',
+    badge: 'Consulting',
     items: [
-      { title: 'Cyber-Physical System Architecture', href: '/services/managed-advisory/architecture-consulting', desc: 'Bespoke telemetry design, TimescaleDB, and MQTT broker sizing' },
-      { title: 'Zero-Downtime Migration Services', href: '/services/managed-advisory/cloud-migration', desc: 'Migrate legacy monoliths to AetherNexus multi-tenant RLS' },
-      { title: '24/7 Autonomous Mission Control', href: '/services/managed-advisory/managed-sre', desc: 'Guaranteed 99.99% SLAs with automated incident response' },
+      { id: 'architecture-consulting', title: 'Cyber-Physical Architecture Consulting', href: '/services/managed-advisory/architecture-consulting', desc: 'Custom telemetry topology design, TimescaleDB ring buffer sizing, and broker architecture', isHighlight: true },
+      { id: 'cloud-migration', title: 'Zero-Downtime Migration Services', href: '/services/managed-advisory/cloud-migration', desc: 'Migrate legacy monolithic infrastructure onto isolated multi-tenant event-driven platforms' },
+      { id: 'managed-sre', title: '24/7 Managed SRE & Mission Control', href: '/services/managed-advisory/managed-sre', desc: 'Guaranteed 99.99% uptime SLAs with dedicated systems architect on-call support' },
     ],
   },
 ];
 
 export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) => {
-  const [activeCategory, setActiveCategory] = useState<string>('platform-core');
+  const [activeCategory, setActiveCategory] = useState<string>('cloud-platform');
 
   const selectedCategory = SERVICES_CATEGORIES.find((c) => c.id === activeCategory) || SERVICES_CATEGORIES[0];
 
   return (
     <div 
-      className="apple-glassdoor rounded-3xl border border-white/90 p-6 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      className="bg-white rounded-3xl border border-slate-200/95 p-6 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150 z-50 text-left select-none"
       onMouseLeave={onClose}
     >
       {/* Top Banner inside Menu */}
       <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/80">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+          <div className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
           <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-            AetherNexus Services & Enterprise Solutions
+            AetherNexus Professional Services & Solutions
           </span>
-          <span className="text-[10px] font-semibold bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full border border-blue-200">
-            7 Bundles • 11 Verticals
+          <span className="text-[10px] font-semibold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
+            6 Portfolios • Enterprise Ready
           </span>
         </div>
         <Link
           href="/services"
-          onClick={() => onClose()}
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group"
+          onClick={onClose}
+          className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 group"
         >
-          <span>Explore Master Directory</span>
+          <span>Explore All Services Catalog</span>
           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </div>
@@ -161,27 +142,27 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
                 key={cat.id}
                 onMouseEnter={() => setActiveCategory(cat.id)}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`w-full text-left flex items-start gap-3 p-2.5 rounded-xl transition-all ${
+                className={`w-full text-left flex items-start gap-3 p-3 rounded-2xl transition-all cursor-pointer ${
                   isSelected 
-                    ? 'bg-blue-600 text-white shadow-xs' 
-                    : 'hover:bg-white/80 text-slate-700 hover:text-slate-900'
+                    ? 'bg-blue-600 text-white shadow-sm' 
+                    : 'hover:bg-slate-50 text-slate-700 hover:text-slate-900'
                 }`}
               >
-                <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                <div className={`p-2 rounded-xl shrink-0 ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'}`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-1">
                     <span className="text-xs font-bold truncate">{cat.name}</span>
                     {cat.badge && (
-                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full ${
+                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full shrink-0 ${
                         isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
                       }`}>
                         {cat.badge}
                       </span>
                     )}
                   </div>
-                  <p className={`text-[10px] truncate ${isSelected ? 'text-blue-100' : 'text-slate-400'}`}>
+                  <p className={`text-[10px] truncate mt-0.5 ${isSelected ? 'text-blue-100' : 'text-slate-500'}`}>
                     {cat.tagline}
                   </p>
                 </div>
@@ -193,41 +174,41 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
         {/* Right Column: Active Category Sub-items */}
         <div className="col-span-8 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-3.5">
               <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <span>{selectedCategory.name}</span>
-                <span className="text-[11px] font-normal text-slate-400">({selectedCategory.items.length} offerings)</span>
+                <span className="text-[11px] font-normal text-slate-500">({selectedCategory.items.length} offerings)</span>
               </h4>
               <Link
                 href={`/services/${selectedCategory.id}`}
-                onClick={() => onClose()}
-                className="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"
+                onClick={onClose}
+                className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
               >
-                <span>View Category Hub</span>
+                <span>View Portfolio Hub</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-2.5">
-              {selectedCategory.items.map((item, idx) => (
+            <div className="grid grid-cols-2 gap-3">
+              {selectedCategory.items.map((item) => (
                 <Link
-                  key={idx}
+                  key={item.id}
                   href={item.href}
-                  onClick={() => onClose()}
-                  className={`group p-2.5 rounded-xl border transition-all text-left block ${
+                  onClick={onClose}
+                  className={`group p-3 rounded-2xl border transition-all text-left block ${
                     item.isHighlight 
-                      ? 'bg-blue-50/70 border-blue-200/80 hover:bg-blue-50 hover:border-blue-300' 
-                      : 'bg-white/70 border-slate-200/80 hover:bg-white hover:border-slate-300 shadow-2xs'
+                      ? 'bg-blue-50/60 border-blue-200/90 hover:bg-blue-50 hover:border-blue-300' 
+                      : 'bg-slate-50/80 border-slate-200/90 hover:bg-white hover:border-slate-300 shadow-2xs'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-1">
                     <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors flex items-center gap-1.5">
-                      {item.isHighlight && <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />}
+                      {item.isHighlight && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
                       <span className="truncate">{item.title}</span>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all shrink-0" />
+                    <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0" />
                   </div>
-                  <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                  <p className="text-[11px] text-slate-500 line-clamp-2 mt-1 leading-relaxed">
                     {item.desc}
                   </p>
                 </Link>
@@ -236,21 +217,21 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
           </div>
 
           {/* Quick Action Footer inside Mega-Menu */}
-          <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between bg-slate-50/80 -mx-2 -mb-2 p-3 rounded-2xl">
+          <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between bg-slate-50/90 -mx-2 -mb-2 p-3 rounded-2xl">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
               <div className="text-[11px] text-slate-600">
-                <span className="font-semibold text-slate-800">ISO/IEC 27001 & SOC 2 Type II</span> Certified Platform
+                <span className="font-bold text-slate-800">ISO/IEC 27001 & SOC 2 Type II</span> Standards Compliant
               </div>
             </div>
             <Link
-              href="/services/diagnostic-mri/universal-scanner"
-              onClick={() => onClose()}
-              className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs"
+              href="/services/quality-compliance/diagnostic-scanner"
+              onClick={onClose}
+              className="text-xs font-bold px-3.5 py-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-95 transition-all shadow-xs"
             >
-              Run Free 10-Probe Diagnostic MRI
+              Run Free 10-Point Health Scan
             </Link>
           </div>
         </div>
@@ -258,4 +239,3 @@ export const ServicesMegaMenu: React.FC<ServicesMegaMenuProps> = ({ onClose }) =
     </div>
   );
 };
-

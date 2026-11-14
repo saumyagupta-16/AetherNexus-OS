@@ -18,7 +18,7 @@ function IndividualServiceContent() {
   const slug = params?.slug as string;
 
   const category = SERVICES_CATEGORIES.find((c) => c.id === categoryId) || SERVICES_CATEGORIES[0];
-  const service = category.items.find((item) => item.href.endsWith(slug)) || category.items[0];
+  const service = category.items.find((item) => item.id === slug || item.href.endsWith(slug)) || category.items[0];
 
   const [isRunningProbe, setIsRunningProbe] = useState(false);
   const [probeResult, setProbeResult] = useState<string | null>(null);
