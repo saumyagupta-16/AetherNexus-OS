@@ -102,7 +102,7 @@ export default function ProfilePage() {
                 }}
                 className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-medium text-slate-800 shadow-2xs cursor-pointer"
               >
-                <option value="qualimatrix-enterprise">Qualimatrix Technologies (Default)</option>
+                <option value="aethernexus-enterprise">AetherNexus Systems (Default)</option>
                 <option value="siemens-energy">Siemens Energy IIoT Lab</option>
                 <option value="microsoft-cloud-qa">Microsoft Cloud QA Staging</option>
                 <option value="reliance-jio-telecom">Reliance Jio 5G Operations</option>

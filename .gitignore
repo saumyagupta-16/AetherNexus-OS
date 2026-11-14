@@ -17,6 +17,7 @@ venv/
 ENV/
 
 # Next.js & Frontend Builds
+.next/
 frontend/.next/
 frontend/out/
 frontend/build/

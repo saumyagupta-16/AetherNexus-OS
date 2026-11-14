@@ -68,7 +68,7 @@ export const ClientAuditorWorkspace: React.FC<ClientAuditorWorkspaceProps> = ({
         <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 space-y-2 text-xs">
           <div className="flex justify-between items-center text-slate-600 font-medium">
             <span>Target Organization:</span>
-            <span className="font-bold text-slate-900">Qualimatrix Technologies Enterprise</span>
+            <span className="font-bold text-slate-900">AetherNexus Systems Enterprise</span>
           </div>
           <div className="flex justify-between items-center text-slate-600 font-medium">
             <span>Verification Standard:</span>

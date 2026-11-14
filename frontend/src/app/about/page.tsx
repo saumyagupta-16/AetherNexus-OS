@@ -19,7 +19,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold">
             <Building className="w-3.5 h-3.5 text-blue-500" />
-            <span>Qualimatrix Technologies & Enterprise Ecosystem</span>
+            <span>AetherNexus Systems & Enterprise Ecosystem</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 max-w-4xl mx-auto">

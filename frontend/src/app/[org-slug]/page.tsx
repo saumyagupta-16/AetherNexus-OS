@@ -4,7 +4,7 @@ import { EnterpriseCommandCenter } from '@/components/workspace/EnterpriseComman
 
 export function generateStaticParams() {
   return [
-    { 'org-slug': 'qualimatrix-enterprise' },
+    { 'org-slug': 'aethernexus-enterprise' },
     { 'org-slug': 'siemens-iiot' },
     { 'org-slug': 'jio-telecom' },
     { 'org-slug': 'microsoft-cloud' },

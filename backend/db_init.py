@@ -85,7 +85,7 @@ ALTER TABLE diagnostic_audits ENABLE ROW LEVEL SECURITY;
 
 -- 7. SEED INITIAL ENTERPRISE ORGANIZATION
 INSERT INTO organizations (name, slug, industry_category, subscription_tier)
-VALUES ('Qualimatrix Technologies Enterprise', 'qualimatrix-enterprise', 'IIOT', 'ENTERPRISE_14999')
+VALUES ('AetherNexus Systems Enterprise', 'aethernexus-enterprise', 'IIOT', 'ENTERPRISE_14999')
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO nodes (id, org_id, node_type, silicon_dna_hash, status)
@@ -95,7 +95,7 @@ SELECT
     'PHYSICAL_ESP32', 
     'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 
     'HEALTHY'
-FROM organizations WHERE slug = 'qualimatrix-enterprise'
+FROM organizations WHERE slug = 'aethernexus-enterprise'
 ON CONFLICT (id) DO NOTHING;
 """
 

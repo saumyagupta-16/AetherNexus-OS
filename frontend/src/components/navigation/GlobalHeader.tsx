@@ -51,7 +51,7 @@ export const GlobalHeader: React.FC = () => {
                   Enterprise
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-medium hidden sm:block">Qualimatrix Technologies</p>
+              <p className="text-[11px] text-slate-400 font-medium hidden sm:block">Autonomous Systems Platform</p>
             </div>
           </Link>
         </div>

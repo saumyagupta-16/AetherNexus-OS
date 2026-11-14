@@ -18,12 +18,12 @@ export interface UserProfile {
 const DEFAULT_USER: UserProfile = {
   id: 'usr_01jk9824',
   name: 'Saumya Gupta',
-  email: 's.gupta@qualimatrix.com',
+  email: 's.gupta@aethernexus.io',
   avatarUrl: '/avatars/saumya.png',
   role: 'LEAD_ARCHITECT',
   roleTitle: 'Systems Architect',
-  organization: 'Qualimatrix Technologies',
-  orgSlug: 'qualimatrix-enterprise',
+  organization: 'AetherNexus Systems',
+  orgSlug: 'aethernexus-enterprise',
   siliconDnaHash: '0x9E7F4A12B8C3D5E6',
   isAuthenticated: true,
 };
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const updated = {
         ...prev,
         orgSlug,
-        organization: orgName || (orgSlug === 'qualimatrix-enterprise' ? 'Qualimatrix Technologies' : orgSlug.replace('-', ' ').toUpperCase()),
+        organization: orgName || (orgSlug === 'aethernexus-enterprise' ? 'AetherNexus Systems' : orgSlug.replace('-', ' ').toUpperCase()),
       };
       try {
         localStorage.setItem('aethernexus_auth', JSON.stringify(updated));

@@ -329,7 +329,7 @@ def build_master_55_page_docx(png_files):
         footer = section.footer
         fp = footer.paragraphs[0]
         fp.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        frun1 = fp.add_run("QUALIMATRIX TECHNOLOGIES — PROPRIETARY & CONFIDENTIAL")
+        frun1 = fp.add_run("AETHERNEXUS SYSTEMS — PROPRIETARY & CONFIDENTIAL")
         frun1.font.name = "Calibri"
         frun1.font.size = Pt(8)
         frun1.font.color.rgb = RGBColor(148, 163, 184)
@@ -368,7 +368,7 @@ def build_master_55_page_docx(png_files):
     tbl_meta.alignment = WD_TABLE_ALIGNMENT.CENTER
     meta_rows = [
         ("Author & Principal Systems Architect", "Saumya Gupta (IoT, Cyber-Physical Systems & Full-Stack Architect)"),
-        ("Target Organization & Deployment", "Qualimatrix Technologies & Global B2B SaaS Enterprise Ecosystem"),
+        ("Target Organization & Deployment", "Global Enterprise Infrastructure & B2B SaaS Ecosystem"),
         ("Architectural Scope", "11 Industry Blueprints, 5 Frontier Deep-Tech Breakthroughs, Edge ESP32 Pod"),
         ("Compliance & Industry Standards", "ISO/IEC 27001, SOC 2 Type II, IEC 62443 Industrial Cybersecurity, MQTT v5.0"),
         ("Core Technology Stack", "Next.js 15, FastAPI, LangGraph, Scikit-Learn, TimescaleDB, ESP32 DevKit V1"),
@@ -402,7 +402,7 @@ def build_master_55_page_docx(png_files):
         ("Chapter 1", "Master Executive Vision, Problem Statement & 4-Tier Cyber-Physical Architecture", "Pages 3 - 6"),
         ("Chapters 2 - 12", "Exhaustive Industry Blueprints for All 11 Global Enterprise Verticals", "Pages 7 - 39"),
         ("  • Chapter 2", "Product-Based IT Software Companies (Microsoft, Adobe, Oracle)", "Pages 7 - 9"),
-        ("  • Chapter 3", "Service-Based IT & Consulting Companies (TCS, Infosys, Qualimatrix)", "Pages 10 - 12"),
+        ("  • Chapter 3", "Service-Based IT & Consulting Companies (TCS, Infosys, Wipro)", "Pages 10 - 12"),
         ("  • Chapter 4", "SaaS (Software-as-a-Service) Companies (Salesforce, Slack, Zoom)", "Pages 13 - 15"),
         ("  • Chapter 5", "Industrial IoT (IIoT) & Smart Manufacturing (Siemens, Bosch, ABB)", "Pages 16 - 18"),
         ("  • Chapter 6", "Consumer IoT & Smart Home / Wearables (Ring, Fitbit, Philips Hue)", "Pages 19 - 21"),
@@ -578,7 +578,7 @@ def build_master_55_page_docx(png_files):
         {
             "num": 3,
             "title": "Service-Based IT & Consulting Companies",
-            "market": "Tata Consultancy Services (TCS), Infosys, Wipro, Qualimatrix Technologies, Cognizant, Accenture, Capgemini",
+            "market": "Tata Consultancy Services (TCS), Infosys, Wipro, Cognizant, Accenture, Capgemini",
             "pain_scenarios": (
                 "IT services and QA testing consultancies operate under high-stakes client contracts where multiple disparate client projects "
                 "must be managed simultaneously under strict Service Level Agreements (SLAs). Key challenges include: (a) Proving zero-defect quality "

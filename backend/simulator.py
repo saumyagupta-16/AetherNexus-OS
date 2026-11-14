@@ -109,7 +109,7 @@ class FleetSimulator:
 
         return {
             "node_id": primary_node_id,
-            "org_slug": "qualimatrix-enterprise",
+            "org_slug": "aethernexus-enterprise",
             "timestamp_ms": t_ms,
             "node_status": node_status,
             "metrics": {

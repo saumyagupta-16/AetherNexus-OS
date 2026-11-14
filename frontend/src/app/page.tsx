@@ -32,7 +32,7 @@ export default function HomePage() {
           {/* Top Pill */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200/90 text-blue-700 text-xs font-bold shadow-2xs backdrop-blur-md animate-in fade-in duration-300">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            <span>QUALIMATRIX TECHNOLOGIES • ENTERPRISE OPERATING SYSTEM</span>
+            <span>AETHERNEXUS • ENTERPRISE OPERATING SYSTEM</span>
           </div>
 
           {/* Main Title */}
@@ -70,7 +70,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              href="/qualimatrix-enterprise"
+              href="/aethernexus-enterprise"
               onClick={() => appleAudio.playClick()}
               className="flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-blue-50 text-blue-700 border border-blue-200/80 font-bold text-sm hover:bg-blue-100 transition-all"
             >
@@ -366,7 +366,7 @@ export default function HomePage() {
               How Enterprise Services & Workspaces Are Delivered
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-              When an enterprise engages Qualimatrix Technologies, the system moves through a standardized 4-stage deployment pipeline with isolated tenant security.
+              When an enterprise deploys AetherNexus OS, the system moves through a standardized 4-stage deployment pipeline with isolated tenant security.
             </p>
           </div>
 
@@ -501,7 +501,7 @@ export default function HomePage() {
             </div>
             <p className="text-slate-500 max-w-sm text-xs leading-relaxed">
               Multi-Tenant Autonomous Enterprise Operating System, Cyber-Physical Diagnostic MRI & Self-Healing Cloud Pod. 
-              Designed for Qualimatrix Technologies and the global B2B SaaS ecosystem.
+              Engineered for mission-critical industrial infrastructure and the global B2B SaaS ecosystem.
             </p>
             <div className="text-[11px] text-slate-400">
               Architect: <span className="font-semibold text-slate-700">Saumya Gupta</span>
@@ -547,7 +547,7 @@ export default function HomePage() {
 
         <div className="max-w-7xl mx-auto pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
           <div>
-            © 2026 Qualimatrix Technologies. All rights reserved. Standards compliant with ISO/IEC 27001 & SOC 2 Type II.
+            © 2026 AetherNexus Systems. All rights reserved. Standards compliant with ISO/IEC 27001 & SOC 2 Type II.
           </div>
           <div className="flex items-center gap-4">
             <span className="text-slate-400">v1.0.4 Production Golden Master</span>

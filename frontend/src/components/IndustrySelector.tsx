@@ -12,7 +12,7 @@ export interface Industry {
 
 export const INDUSTRIES_LIST: Industry[] = [
   { id: 'IT_PRODUCT', name: 'Product Software', focus: 'API Breaking Changes & Self-Morphing AST', targetOrgs: 'Microsoft, Adobe, Oracle' },
-  { id: 'IT_SERVICE', name: 'Service IT & QA', focus: 'Multi-Client AutoQA & Signed Audit PDF', targetOrgs: 'TCS, Infosys, Qualimatrix' },
+  { id: 'IT_SERVICE', name: 'Service IT & QA', focus: 'Multi-Client AutoQA & Signed Audit PDF', targetOrgs: 'TCS, Infosys, Global SIs' },
   { id: 'SAAS', name: 'SaaS Platforms', focus: 'Webhook Drops & Per-Tenant Latency', targetOrgs: 'Salesforce, Slack, Zoom' },
   { id: 'IIOT', name: 'Industrial IoT & Turbines', focus: 'Broken Wire Halt & MorphOS Phantom ML', targetOrgs: 'Siemens, Bosch, ABB' },
   { id: 'CONSUMER_IOT', name: 'Consumer Wearables', focus: 'Wi-Fi Drops, Heap Leaks & OTA Healer', targetOrgs: 'Ring, Fitbit, Apple HomeKit' },

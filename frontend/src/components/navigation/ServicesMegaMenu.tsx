@@ -111,7 +111,7 @@ export const SERVICES_CATEGORIES: CategoryItem[] = [
     id: 'managed-advisory',
     name: 'Enterprise Advisory & SRE',
     icon: Wrench,
-    tagline: 'Qualimatrix Professional Services',
+    tagline: 'AetherNexus Professional Services',
     items: [
       { title: 'Cyber-Physical System Architecture', href: '/services/managed-advisory/architecture-consulting', desc: 'Bespoke telemetry design, TimescaleDB, and MQTT broker sizing' },
       { title: 'Zero-Downtime Migration Services', href: '/services/managed-advisory/cloud-migration', desc: 'Migrate legacy monoliths to AetherNexus multi-tenant RLS' },

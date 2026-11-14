@@ -2,7 +2,7 @@
 **Multi-Tenant Autonomous Enterprise Operating System, Cyber-Physical Diagnostic MRI & Self-Healing Cloud Pod**
 
 Author & Systems Architect: **Saumya Gupta**  
-Target Deployment: **Qualimatrix Technologies & Global B2B SaaS Enterprise Ecosystem**  
+Target Deployment: **Global Enterprise Infrastructure & B2B SaaS Ecosystem**  
 Standards Compliance: **ISO/IEC 27001, SOC 2 Type II, IEC 62443 Industrial Cybersecurity, MQTT v5.0**
 
 ---

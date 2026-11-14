@@ -43,8 +43,8 @@ class EnterpriseAuthManager:
                 "role": "CEO_ADMIN",
                 "email": "architect@aethernexus.ai",
                 "org_id": "8f3b2d10-4c7a-4e9b-b5d2-1a2c3d4e5f60",
-                "org_slug": "qualimatrix-enterprise",
-                "org_name": "Qualimatrix Technologies Enterprise",
+                "org_slug": "aethernexus-enterprise",
+                "org_name": "AetherNexus Systems Enterprise",
                 "scopes": [
                     "admin:all",
                     "telemetry:50hz",

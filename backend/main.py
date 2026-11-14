@@ -4,6 +4,22 @@ The Cyber-Physical Diagnostic MRI, Autonomous Self-Healing Core & Telemetry Bus
 """
 import os
 import sys
+import time
+import atexit
+import traceback
+
+def log_unhandled_exception(exc_type, exc_value, exc_tb):
+    with open("backend_crash.log", "a") as f:
+        f.write(f"\n--- UNHANDLED EXCEPTION {time.ctime()} ---\n")
+        traceback.print_exception(exc_type, exc_value, exc_tb, file=f)
+sys.excepthook = log_unhandled_exception
+
+def log_exit():
+    with open("backend_exit.log", "a") as f:
+        f.write(f"\n--- ATEXIT TRIGGERED {time.ctime()} ---\n")
+        f.write("".join(traceback.format_stack()))
+atexit.register(log_exit)
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import asyncio
 import json
@@ -455,7 +471,7 @@ def run_mri_diagnostic_scan(req: MRIScanRequest):
 @app.post("/api/mri/generate-pdf")
 def generate_signed_pdf_audit(req: MRIScanRequest):
     scan_results = mri_scanner.run_full_scan(req.target_url, req.node_id)
-    pdf_info = pdf_generator.generate_certificate(scan_results, org_name="Qualimatrix Enterprise Group")
+    pdf_info = pdf_generator.generate_certificate(scan_results, org_name="AetherNexus Enterprise Group")
     return {
         "scan_results": scan_results,
         "pdf_info": pdf_info
